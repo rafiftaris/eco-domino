@@ -8,15 +8,29 @@
 
 config_version=4
 
-_global_script_classes=[  ]
+_global_script_classes=[ {
+"base": "Node2D",
+"class": "Card",
+"language": "GDScript",
+"path": "res://Card/card.gd"
+} ]
 _global_script_class_icons={
-
+"Card": ""
 }
 
 [application]
 
 config/name="Domino Ekosistem"
 config/icon="res://icon.png"
+
+[autoload]
+
+Global="*res://Globals/global.gd"
+
+[input_devices]
+
+pointing/emulate_touch_from_mouse=true
+pointing/emulate_mouse_from_touch=false
 
 [rendering]
 
