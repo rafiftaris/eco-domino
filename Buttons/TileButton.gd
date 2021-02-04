@@ -19,11 +19,9 @@ func _ready():
 	set_size(Vector2(Global.tile_size,Global.tile_size))
 
 func _pressed():
-	print(str(row) + " " + str(column))
 	emit_signal("tile_selected",self)
 
 func set_highlight(flag):
-	print('highlight: ' + str(row) + " " + str(column))
 	if flag:
 		set_normal_texture(hl_texture)
 	else:
