@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://Board/tiles_manager.gd" type="Script" id=1]
+[ext_resource path="res://Board/TilesManager.gd" type="Script" id=1]
 
 [node name="TilesManager" type="Node2D"]
 script = ExtResource( 1 )

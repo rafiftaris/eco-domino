@@ -8,7 +8,29 @@ class CardBotReference:
 	func _init(level):
 		self.level = level
 
-var tile_size = 87
+const button_blank_normal = preload("res://Buttons/Assets/CardSelect/card-select-button-template.png")
+const button_normal = [
+	preload("res://Buttons/Assets/CardSelect/button-0-normal.png"),
+	preload("res://Buttons/Assets/CardSelect/button-1-normal.png"),
+	preload("res://Buttons/Assets/CardSelect/button-2-normal.png"),
+	preload("res://Buttons/Assets/CardSelect/button-3-normal.png"),
+	preload("res://Buttons/Assets/CardSelect/button-4-normal.png"),
+	preload("res://Buttons/Assets/CardSelect/button-5-normal.png"),
+	preload("res://Buttons/Assets/CardSelect/button-6-normal.png")
+]
+
+const button_blank_pressed = preload("res://Buttons/Assets/CardSelect/card-pressed-button-template.png")
+const button_pressed = [
+	preload("res://Buttons/Assets/CardSelect/button-0-pressed.png"),
+	preload("res://Buttons/Assets/CardSelect/button-1-pressed.png"),
+	preload("res://Buttons/Assets/CardSelect/button-2-pressed.png"),
+	preload("res://Buttons/Assets/CardSelect/button-3-pressed.png"),
+	preload("res://Buttons/Assets/CardSelect/button-4-pressed.png"),
+	preload("res://Buttons/Assets/CardSelect/button-5-pressed.png"),
+	preload("res://Buttons/Assets/CardSelect/button-6-pressed.png")
+]
+
+var tile_size = 99
 var board_row = 5
 var board_column = 8
 var card_row = 2
