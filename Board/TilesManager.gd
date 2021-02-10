@@ -297,3 +297,6 @@ func is_adjacent_empty(row,column):
 func give_hint(coords):
 	tiles[coords[0][0]][coords[0][1]].set_highlight(true)
 	tiles[coords[1][0]][coords[1][1]].set_highlight(true)
+	
+func count_score():
+	pass

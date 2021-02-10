@@ -41,19 +41,22 @@ const button_hinted = [
 	preload("res://Buttons/Assets/CardSelect/button-6-highlight.png")
 ]
 
-var tile_size = 99
-var board_row = 5
-var board_column = 8
-var card_row = 2
-var card_column = 2
-var max_hierarchy = 7
-var input_enabled = true
-var use_hint = false
+const tile_size = 99
+const board_row = 5
+const board_column = 8
+const card_row = 2
+const card_column = 2
+const max_hierarchy = 7
+var score_inc = 50
+var wrong_penalty = -50
+var time_penalty = -100
+
 enum CardPosition {UP,RIGHT,DOWN,LEFT}
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+var input_enabled = true
+var use_hint = false
+var timer_minute = 0
+var timer_seconds = 10
 
 
 # Called when the node enters the scene tree for the first time.

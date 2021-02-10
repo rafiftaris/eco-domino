@@ -23,5 +23,5 @@ func deduct_hint():
 	hint_count -= 1
 	update_text()
 	set_pressed(false)
-#	if hint_count == 0:
-#		set_disabled(true)
+	if hint_count == 0:
+		set_disabled(true)

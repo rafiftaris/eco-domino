@@ -14,10 +14,12 @@ var current_column = -1
 func _ready():
 	$FinishButton.connect("finish_game",self,"_on_finish_game")
 	$HintButton.connect("give_hint",self,"_on_give_hint")
+	$TimerText.init_timer()
+	$GameTimer.start()
 
 func _on_finish_game():
 	pass
-#	$GameOverPopup.set_visible(true)
+#	$TilesManager.count_score()
 
 func _on_give_hint():
 	get_card_levels()
@@ -80,6 +82,11 @@ func _on_HintTimer_timeout():
 		reset_after_hint()
 		hint_step = 0
 #	print("hint_step: %s"%hint_step)
+
+func _on_GameTimer_timeout():
+	$TimerText.update_timer()
+	if $TimerText.countdown_seconds <= 0:
+		$TimerText.set_penalty(true)
 
 func reset_after_hint():
 	Global.use_hint = true

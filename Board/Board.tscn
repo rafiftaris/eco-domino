@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Board/TilesManager.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Board/CardManager.gd" type="Script" id=2]
@@ -6,6 +6,12 @@
 [ext_resource path="res://Board/Board.gd" type="Script" id=4]
 [ext_resource path="res://Popup/GameOverPopup.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Buttons/HintButton.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Board/TimerText.gd" type="Script" id=7]
+[ext_resource path="res://Fonts/open-sans/OpenSans-Regular.ttf" type="DynamicFontData" id=8]
+
+[sub_resource type="DynamicFont" id=1]
+size = 65
+font_data = ExtResource( 8 )
 
 [node name="Board" type="Node2D"]
 scale = Vector2( 1.8, 1.8 )
@@ -20,9 +26,17 @@ script = ExtResource( 2 )
 position = Vector2( 13, 11 )
 polygon = PoolVector2Array( 0, 0, 64, 0, 64, 64, 0, 64 )
 
-[node name="Timer" type="Polygon2D" parent="."]
-position = Vector2( 367, 15 )
-polygon = PoolVector2Array( 0, 0, 256, 0, 256, 64, 0, 64 )
+[node name="TimerText" type="Label" parent="."]
+margin_left = 384.648
+margin_top = 5.01129
+margin_right = 549.648
+margin_bottom = 95.0113
+custom_fonts/font = SubResource( 1 )
+text = "02:00"
+script = ExtResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="FinishButton" parent="." instance=ExtResource( 3 )]
 margin_left = 866.0
@@ -42,4 +56,7 @@ rect_scale = Vector2( 1.5, 1.5 )
 
 [node name="HintTimer" type="Timer" parent="."]
 one_shot = true
+
+[node name="GameTimer" type="Timer" parent="."]
 [connection signal="timeout" from="HintTimer" to="." method="_on_HintTimer_timeout"]
+[connection signal="timeout" from="GameTimer" to="." method="_on_GameTimer_timeout"]
