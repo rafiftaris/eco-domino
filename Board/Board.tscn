@@ -1,12 +1,15 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Board/TilesManager.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Board/CardManager.gd" type="Script" id=2]
-[ext_resource path="res://Buttons/Assets/PNG/grey_button10.png" type="Texture" id=3]
-[ext_resource path="res://Buttons/Assets/PNG/yellow_button10.png" type="Texture" id=4]
+[ext_resource path="res://Buttons/FinishButton.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Board/Board.gd" type="Script" id=4]
+[ext_resource path="res://Popup/GameOverPopup.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Buttons/HintButton.tscn" type="PackedScene" id=6]
 
 [node name="Board" type="Node2D"]
 scale = Vector2( 1.8, 1.8 )
+script = ExtResource( 4 )
 
 [node name="TilesManager" parent="." instance=ExtResource( 1 )]
 
@@ -21,16 +24,22 @@ polygon = PoolVector2Array( 0, 0, 64, 0, 64, 64, 0, 64 )
 position = Vector2( 367, 15 )
 polygon = PoolVector2Array( 0, 0, 256, 0, 256, 64, 0, 64 )
 
-[node name="Hint" type="Polygon2D" parent="."]
-position = Vector2( 930.542, 11.2153 )
-polygon = PoolVector2Array( 0, 0, 192, 0, 192, 64, 0, 64 )
+[node name="FinishButton" parent="." instance=ExtResource( 3 )]
+margin_left = 866.0
+margin_top = 516.783
+margin_right = 1056.0
+margin_bottom = 565.783
+rect_scale = Vector2( 1.5, 1.5 )
 
-[node name="Finish" type="Polygon2D" parent="."]
-position = Vector2( 940.267, 515.344 )
-polygon = PoolVector2Array( 0, 0, 192, 0, 192, 64, 0, 64 )
+[node name="HintButton" parent="." instance=ExtResource( 6 )]
+margin_left = 866.0
+margin_top = 10.221
+margin_right = 1056.0
+margin_bottom = 59.221
+rect_scale = Vector2( 1.5, 1.5 )
 
-[node name="TouchScreenButton" type="TouchScreenButton" parent="."]
-position = Vector2( 1163.05, 525.023 )
-normal = ExtResource( 3 )
-pressed = ExtResource( 4 )
-passby_press = true
+[node name="GameOverPopup" parent="." instance=ExtResource( 5 )]
+
+[node name="HintTimer" type="Timer" parent="."]
+one_shot = true
+[connection signal="timeout" from="HintTimer" to="." method="_on_HintTimer_timeout"]

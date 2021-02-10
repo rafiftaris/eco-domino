@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Buttons/Assets/PNG/yellow_button04.png" type="Texture" id=1]
+[ext_resource path="res://Buttons/Assets/PNG/yellow_button05.png" type="Texture" id=2]
+[ext_resource path="res://Buttons/Assets/PNG/grey_button05.png" type="Texture" id=3]
+[ext_resource path="res://Buttons/HintButton.gd" type="Script" id=4]
+
+[node name="HintButton" type="TextureButton"]
+margin_right = 40.0
+margin_bottom = 40.0
+toggle_mode = true
+action_mode = 0
+button_mask = 0
+texture_normal = ExtResource( 1 )
+texture_pressed = ExtResource( 2 )
+texture_disabled = ExtResource( 3 )
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+margin_right = 94.0
+margin_bottom = 25.0
+rect_scale = Vector2( 2, 2 )
+text = "HINT: 2"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}

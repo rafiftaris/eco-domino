@@ -1,0 +1,10 @@
+[gd_scene format=2]
+
+[node name="GameOverPopup" type="PopupDialog"]
+margin_left = 359.0
+margin_top = 95.0
+margin_right = 1864.0
+margin_bottom = 957.0
+__meta__ = {
+"_edit_use_anchors_": false
+}

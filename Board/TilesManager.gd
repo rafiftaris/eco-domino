@@ -19,8 +19,9 @@ var current_selected_tile = {
 	"adj_level": -1 
 }
 var start = {
-	"row": 1,
-	"column": 3
+	"row": 0,
+	"column": 0,
+	"position": Global.CardPosition.DOWN
 }
 var tiles = []
 signal tile_selected(tile)
@@ -56,7 +57,7 @@ func _init():
 			tiles[i].append(new_tile)
 	
 	new_card = card.instance()
-	new_card.init(0,Global.CardPosition.DOWN)
+	new_card.init(0,Global.CardPosition.DOWN,start.row,start.column)
 	new_card.set_card_pos(coord_to_vec(start.row,start.column),coord_to_vec(start.row+1,start.column))
 	tiles[start.row][start.column].queue_free()
 	tiles[start.row+1][start.column].queue_free()
@@ -91,6 +92,7 @@ func _on_tile_selected(tile):
 		place_card(tile, level)
 		reset_select_tile()
 		reset_button()
+		get_parent().deduct_hint()
 
 func highlight_adj_tile(row, column, flag):
 	# Down
@@ -165,8 +167,12 @@ func place_card(bot_tile, level):
 	}
 	
 	new_card = card.instance()
-	new_card.init(level,card_pos)
+	new_card.init(level,card_pos,current_selected_tile.row,current_selected_tile.column)
 	new_card.set_card_pos(top,bot)
+	
+	tiles[current_selected_tile.row][current_selected_tile.column].queue_free()
+	tiles[bot_tile.row][bot_tile.column].queue_free()
+	
 	var reversed = false
 	for adj_level in current_selected_tile.adj_level:
 		if  adj_level.level == (level+1)%7:
@@ -174,15 +180,16 @@ func place_card(bot_tile, level):
 			break
 	if reversed:
 		new_card.set_reversed(true)
-	tiles[current_selected_tile.row][current_selected_tile.column].queue_free()
-	tiles[bot_tile.row][bot_tile.column].queue_free()
-	tiles[current_selected_tile.row][current_selected_tile.column] = new_card
-	tiles[bot_tile.row][bot_tile.column] = Global.CardBotReference.new(new_card.get_bot_level())
+		tiles[bot_tile.row][bot_tile.column] = new_card
+		tiles[current_selected_tile.row][current_selected_tile.column] = Global.CardBotReference.new(new_card.get_bot_level())
+	else:
+		tiles[current_selected_tile.row][current_selected_tile.column] = new_card
+		tiles[bot_tile.row][bot_tile.column] = Global.CardBotReference.new(new_card.get_bot_level())
 	
 	self.add_child(new_card)
 
 func reset_button():
-	get_parent().get_node("CardManager").reset_button()
+	get_parent().get_node("CardManager").reset_button(true)
 	
 func set_enable(flag):
 	self.is_enabled = flag
@@ -198,3 +205,95 @@ func scan_highlight(flag):
 					tiles[i][j].set_highlight(false)
 			elif not(tiles[i][j] is TextureButton):
 				highlight_adj_tile(i,j,true)
+
+func check_possible_card_placement(row,column):
+	var adjs = []
+	# Right
+	if column+1<Global.board_column and tiles[row][column+1] is TextureButton:
+		adjs.append([row,column+1])
+	# Up
+	if row-1>=0 and tiles[row-1][column] is TextureButton:
+		adjs.append([row-1,column])
+	# Down
+	if row+1<Global.board_row and tiles[row+1][column] is TextureButton:
+		adjs.append([row+1,column])
+	# Left
+	if column-1>=0 and tiles[row][column-1] is TextureButton:
+		adjs.append([row,column-1])
+	
+	var second_coord = []
+#	print('curr_coord: %s %s' % [row,column])
+#	print('adjs: %s' % [adjs])
+	for coord in adjs:
+		var prev_row = coord[0]
+		var prev_column = coord[1]
+		
+		var occupied_count = 0
+#		print("adjs_coord: %s %s" % [prev_row, prev_column])
+		# right
+		if prev_column+1<Global.board_column and not tiles[prev_row][prev_column+1] is TextureButton:
+#			print('right')
+			occupied_count += 1
+		# Up
+		if prev_row-1>=0 and not tiles[prev_row-1][prev_column] is TextureButton:
+#			print('up')
+			occupied_count += 1
+		# Down
+		if prev_row+1<Global.board_row and not tiles[prev_row+1][prev_column] is TextureButton:
+#			print('down')
+			occupied_count += 1
+		# Left
+		if prev_column-1>=0 and not tiles[prev_row][prev_column-1] is TextureButton:
+#			print('left')
+			occupied_count += 1
+		if occupied_count > 1:
+			continue
+		
+		second_coord = [[prev_row,prev_column]]
+		# Right
+		if prev_column+1<Global.board_column and tiles[prev_row][prev_column+1] is TextureButton:
+			if is_adjacent_empty(prev_row,prev_column+1):
+				second_coord.append([prev_row,prev_column+1])
+				break
+		# Up
+		if prev_row-1>=0 and tiles[prev_row-1][prev_column] is TextureButton:
+			if is_adjacent_empty(prev_row-1,prev_column):
+				second_coord.append([prev_row-1,prev_column])
+				break
+		# Down
+		if prev_row+1<Global.board_row and tiles[prev_row+1][prev_column] is TextureButton:
+			if is_adjacent_empty(prev_row+1,prev_column):
+				second_coord.append([prev_row+1,prev_column])
+				break
+		# Left
+		if prev_column-1>=0 and tiles[prev_row][prev_column-1] is TextureButton:
+			if is_adjacent_empty(prev_row,prev_column-1):
+				second_coord.append([prev_row,prev_column-1])
+				break
+	
+#	print("second_coord: %s" % [second_coord])
+	if len(second_coord) > 1:
+		return second_coord
+	else:
+		return []
+
+func is_adjacent_empty(row,column):
+	var right = true
+	var top = true
+	var bot = true
+	var left = true
+	if column+1<Global.board_column:
+		right = tiles[row][column+1] is TextureButton
+	if row-1>=0:
+		top = tiles[row-1][column] is TextureButton
+	if row+1<Global.board_row:
+		bot = tiles[row+1][column] is TextureButton
+	if column-1>=0:
+		left = tiles[row][column-1] is TextureButton
+#	print("%s %s" % [row,column])
+#	print("%s %s %s %s" % [top,bot,right,left])
+	return top and bot and right and left
+
+func give_hint(coords):
+	tiles[coords[0][0]][coords[0][1]].set_highlight(true)
+	tiles[coords[1][0]][coords[1][1]].set_highlight(true)

@@ -10,7 +10,7 @@ var column
 var highlight = false
 
 func _gui_input(event):
-	if event is InputEventScreenTouch and event.is_pressed():
+	if event is InputEventScreenTouch and event.is_pressed() and Global.input_enabled:
 		_pressed()
 
 func init(row, column):
@@ -18,7 +18,7 @@ func init(row, column):
 	self.column = column
 	set_toggle_mode(true)
 
-# Called when the node enters the scene tree for the first time.
+# Called when the node enters the scene tree for the first time. 
 func _ready():
 	set_size(Vector2(Global.tile_size,Global.tile_size))
 	set_normal_texture(normal_texture)

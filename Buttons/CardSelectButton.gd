@@ -7,7 +7,7 @@ var row = -1
 var column = -1
 
 func _gui_input(event):
-	if event is InputEventScreenTouch and event.is_pressed():
+	if event is InputEventScreenTouch and event.is_pressed() and Global.input_enabled:
 		_pressed()
 
 func _ready():
@@ -35,3 +35,10 @@ func _pressed():
 		set_pressed(false)
 	else:
 		emit_signal("card_selected",self)
+
+func hint_highlight(flag):
+	if flag:
+		set_normal_texture(Global.button_hinted[level])
+	else:
+		set_normal_texture(Global.button_normal[level])
+

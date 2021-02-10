@@ -16,6 +16,7 @@ var selected_card = {
 	"column": -1,
 	"level": -1
 }
+var levels = [6,0,1,2]
 signal card_selected(card)
 
 func _ready():
@@ -29,7 +30,7 @@ func _init():
 			pos_y = offset_y + i*(Global.tile_size + gap_y)
 
 			new_card = card.instance()
-			new_card.init(randi()%(Global.max_hierarchy-1)+1,i,j)
+			new_card.init(levels[i*2+j],i,j)
 			new_card.set_position(Vector2(pos_x,pos_y))
 			new_card.connect("card_selected",self,"_on_card_selected")
 			add_child(new_card)
@@ -52,7 +53,17 @@ func select_card(row,column,level):
 	selected_card.column = column
 	selected_card.level = level
 
-func reset_button():
+func reset_all_buttons(replace):
+	for card_row in card_display:
+		for card in card_row:
+			card.set_pressed(false)
+			card.hint_highlight(false)
+
+func reset_button(replace):
 	card_display[selected_card.row][selected_card.column].set_pressed(false)
-	card_display[selected_card.row][selected_card.column].set_level(randi()%Global.max_hierarchy)
+	card_display[selected_card.row][selected_card.column].hint_highlight(false)
+	if replace:
+		var new_level = randi()%Global.max_hierarchy
+#		card_display[selected_card.row][selected_card.column].set_level(new_level)
+#		print("new card level: %s" % new_level)
 	select_card(-1,-1,-1)
