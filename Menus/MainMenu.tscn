@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Backgrounds/Cover.png" type="Texture" id=1]
+[ext_resource path="res://Buttons/PlayButton.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Buttons/HowToPlayButton.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Buttons/NavigationButton.gd" type="Script" id=4]
+
+[node name="MainMenu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Background" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+centered = false
+
+[node name="PlayButton" parent="." instance=ExtResource( 2 )]
+margin_left = 902.232
+margin_top = 725.0
+margin_right = 1092.23
+margin_bottom = 774.0
+rect_scale = Vector2( 2.5, 2.5 )
+script = ExtResource( 4 )
+path_to_new_scene = "res://Menus/SelectLevel.tscn"
+
+[node name="HowToPlayButton" parent="." instance=ExtResource( 3 )]
+margin_left = 909.03
+margin_top = 900.0
+margin_right = 1143.03
+margin_bottom = 945.0
+rect_scale = Vector2( 2, 2 )
+script = ExtResource( 4 )
+path_to_new_scene = "res://Menus/MainMenu.tscn"

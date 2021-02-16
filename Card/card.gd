@@ -8,6 +8,7 @@ var card_rotation
 var row = -1
 var column = -1
 var is_reversed = false
+var checked = false
 
 func _ready():
 	pass

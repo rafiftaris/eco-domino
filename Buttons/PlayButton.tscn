@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Buttons/Assets/PNG/green_button04.png" type="Texture" id=1]
+[ext_resource path="res://Buttons/Assets/PNG/green_button05.png" type="Texture" id=2]
+[ext_resource path="res://Fonts/open-sans/OpenSans-Regular.ttf" type="DynamicFontData" id=3]
+
+[sub_resource type="DynamicFont" id=1]
+size = 31
+font_data = ExtResource( 3 )
+
+[node name="PlayButton" type="TextureButton"]
+margin_right = 40.0
+margin_bottom = 40.0
+action_mode = 0
+button_mask = 0
+texture_normal = ExtResource( 1 )
+texture_pressed = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+margin_right = 187.0
+margin_bottom = 44.0
+custom_fonts/font = SubResource( 1 )
+text = "MULAI"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}

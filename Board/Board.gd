@@ -5,21 +5,40 @@ signal give_hint
 
 var card_levels = []
 var hint_coord = []
+var x_marks_coord = []
+var x_marks_idx = 0
 var hint_step = 0
 var card_idx = -1
 var current_row = -1
 var current_column = -1
+var scores = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	x_marks_coord = []
+	x_marks_idx = 0
+	scores = 0
 	$FinishButton.connect("finish_game",self,"_on_finish_game")
 	$HintButton.connect("give_hint",self,"_on_give_hint")
 	$TimerText.init_timer()
 	$GameTimer.start()
 
+func show_x_marks():
+	print('showing x marks....')
+	scores = $TilesManager.count_score()
+	$"X-MarkTimer".start()
+
+func show_popup():
+	$GameOverPopup.show_score(scores, $TimerText.is_penalty)
+	var final_score = scores.score - scores.penalty
+	if $TimerText.is_penalty:
+		final_score -= Global.time_penalty
+	Global.save_game(final_score)
+	
 func _on_finish_game():
-	pass
-#	$TilesManager.count_score()
+	Global.input_enabled = false
+	$GameTimer.stop()
+	show_x_marks()
 
 func _on_give_hint():
 	get_card_levels()
@@ -36,6 +55,8 @@ func _on_give_hint():
 				current_row = tile_row
 				current_column = tile_column
 				for idx in range(len(card_levels)):
+					if idx/2 == 0 and idx%2 == 1: # skips invisible button
+						continue
 					if check_tile(tile,idx,current_level):
 						hint_coord = $TilesManager.check_possible_card_placement(current_row,current_column)
 						if len(hint_coord) == 2:
@@ -54,10 +75,10 @@ func _on_give_hint():
 		$HintButton.set_disabled(true)
 
 func check_tile(tile,idx,current_level):
-#	print("level: %s" % card_levels[idx])
 	var topi = (current_level == (card_levels[idx]+1)%Global.max_hierarchy and tile is Node2D) 
 	var boti = (current_level == (card_levels[idx])%Global.max_hierarchy and tile is Global.CardBotReference)
-
+	
+#	print("(%s %s) %s %s" % [idx/2,idx%2,card_levels[idx], topi or boti])
 	return (topi or boti)
 
 func get_card_levels():
@@ -98,3 +119,16 @@ func reset_after_hint():
 func deduct_hint():
 	if Global.use_hint:
 		$HintButton.deduct_hint()
+
+func _on_TilesManager_x_mark_spot(position):
+	x_marks_coord.append(position)
+#	print('current_wrong: %s' % len(x_marks_coord))
+
+func _on_XMarkTimer_timeout():
+#	print("x_mark_id: %s" % x_marks_idx)
+	if x_marks_idx == len(x_marks_coord):
+		$"X-MarkTimer".stop()
+		show_popup()
+		return
+	$"X-MarkManager".place_mark(x_marks_coord[x_marks_idx])
+	x_marks_idx += 1

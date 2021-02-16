@@ -11,7 +11,7 @@ func update_text():
 	$Label.set_text("HINT: %s" % hint_count)
 	
 func _gui_input(event):
-	if event is InputEventScreenTouch and event.is_pressed() and Global.input_enabled:
+	if event is InputEventScreenTouch and event.is_pressed() and Global.input_enabled and not disabled:
 		_pressed()
 
 func _pressed():

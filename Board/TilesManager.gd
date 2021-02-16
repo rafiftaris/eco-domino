@@ -13,6 +13,8 @@ var new_tile
 var new_card
 var is_enabled = false
 
+signal x_mark_spot(position)
+
 var current_selected_tile = {
 	"row": -1,
 	"column": -1,
@@ -62,7 +64,8 @@ func _init():
 	tiles[start.row][start.column].queue_free()
 	tiles[start.row+1][start.column].queue_free()
 	tiles[start.row][start.column] = new_card
-	tiles[start.row+1][start.column] = Global.CardBotReference.new(new_card.get_bot_level())
+	tiles[start.row+1][start.column] = Global.CardBotReference.new(start, new_card.get_bot_level())
+#	print("init_ref: %s %s" % [start.row+1,start.column])
 	
 	self.add_child(new_card)
 
@@ -179,12 +182,14 @@ func place_card(bot_tile, level):
 			reversed = true
 			break
 	if reversed:
+#		print("ref_tile: %s %s" % [current_selected_tile.row,current_selected_tile.column])
 		new_card.set_reversed(true)
 		tiles[bot_tile.row][bot_tile.column] = new_card
-		tiles[current_selected_tile.row][current_selected_tile.column] = Global.CardBotReference.new(new_card.get_bot_level())
+		tiles[current_selected_tile.row][current_selected_tile.column] = Global.CardBotReference.new(bot_tile, new_card.get_bot_level())
 	else:
+#		print("ref_tile: %s %s" % [bot_tile.row,bot_tile.column])
 		tiles[current_selected_tile.row][current_selected_tile.column] = new_card
-		tiles[bot_tile.row][bot_tile.column] = Global.CardBotReference.new(new_card.get_bot_level())
+		tiles[bot_tile.row][bot_tile.column] = Global.CardBotReference.new(current_selected_tile, new_card.get_bot_level())
 	
 	self.add_child(new_card)
 
@@ -299,4 +304,81 @@ func give_hint(coords):
 	tiles[coords[1][0]][coords[1][1]].set_highlight(true)
 	
 func count_score():
-	pass
+	var score = 0
+	var penalty = 0
+	var i = 0
+	var j = 0
+	
+	for tile_row in tiles:
+		j = 0
+		for tile in tile_row:
+			if tile is TextureButton or tile.checked:
+				j += 1
+				continue
+				
+			print('coord: %s %s' % [i,j])
+			# Right
+			if j+1<Global.board_column:
+				var right = tiles[i][j+1]
+				if not right is TextureButton and not (i == right.row and j == right.column) and not right.checked:
+					if tile.get_class() != right.get_class() and tile.level == right.level:
+						print('score right 1')
+						score += Global.score_inc
+					else:
+						print('penalty right')
+						print(right)
+						print("%s %s" % [right.row,right.column])
+						print(right.level)
+						penalty += Global.wrong_penalty
+						emit_signal("x_mark_spot",coord_to_vec(right.row,right.column))
+			# Up
+			if i-1>=0:
+				var up = tiles[i-1][j]
+				if not up is TextureButton and not (i == up.row and j == up.column) and not up.checked:
+					if tile.get_class() != up.get_class() and tile.level == up.level:
+						print('score up 1')
+						score += Global.score_inc
+					else:
+						print('penalty up')
+						print(up)
+						print("%s %s" % [up.row,up.column])
+						print(up.level)
+						penalty += Global.wrong_penalty
+						emit_signal("x_mark_spot",coord_to_vec(up.row,up.column))
+			# Down
+			if i+1<Global.board_row:
+				var down = tiles[i+1][j]
+				if not down is TextureButton and not (i == down.row and j == down.column) and not down.checked:
+					if tile.get_class() != down.get_class() and tile.level == down.level:
+						print('score down 1')
+						score += Global.score_inc
+					else:
+						print('penalty down')
+						print(down)
+						print("%s %s" % [down.row,down.column])
+						print(down.level)
+						penalty += Global.wrong_penalty
+						emit_signal("x_mark_spot",coord_to_vec(down.row,down.column))
+			# Left
+			if j-1>=0:
+				var left = tiles[i][j-1]
+				if not left is TextureButton and not (i == left.row and j == left.column) and not left.checked:
+					if tile.get_class() != left.get_class() and tile.level == left.level:
+						print('score left 1')
+						score += Global.score_inc
+					else:
+						print('penalty left')
+						print(left)
+						print("%s %s" % [left.row,left.column])
+						print(left.level)
+						penalty += Global.wrong_penalty
+						emit_signal("x_mark_spot",coord_to_vec(left.row,left.column))
+						
+			tile.checked = true
+			j += 1
+		i += 1
+	
+	return {
+		"score": score,
+		"penalty": penalty
+	}

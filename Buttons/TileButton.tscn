@@ -5,6 +5,7 @@
 [ext_resource path="res://Buttons/TileButton.gd" type="Script" id=3]
 
 [node name="TileButton" type="TextureButton"]
+modulate = Color( 1, 1, 1, 0.862745 )
 margin_right = 89.0
 margin_bottom = 89.0
 toggle_mode = true
