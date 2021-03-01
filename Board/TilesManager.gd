@@ -20,21 +20,12 @@ var current_selected_tile = {
 	"column": -1,
 	"adj_level": -1 
 }
-var start = {
-	"row": 0,
-	"column": 0,
-	"position": Global.CardPosition.DOWN
-}
 var tiles = []
 signal tile_selected(tile)
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass
-
 func coord_to_vec(row,col):
-	var x = offset_x + (col+0.5)*(Global.tile_size + gap_size)
-	var y = offset_y + (row+0.5)*(Global.tile_size + gap_size)
+	var x = offset_x + (col)*(Global.tile_size + gap_size)
+	var y = offset_y + (row)*(Global.tile_size + gap_size)
 	
 	return Vector2(x,y)
 
@@ -59,12 +50,32 @@ func _init():
 			tiles[i].append(new_tile)
 	
 	new_card = card.instance()
-	new_card.init(0,Global.CardPosition.DOWN,start.row,start.column)
-	new_card.set_card_pos(coord_to_vec(start.row,start.column),coord_to_vec(start.row+1,start.column))
-	tiles[start.row][start.column].queue_free()
-	tiles[start.row+1][start.column].queue_free()
-	tiles[start.row][start.column] = new_card
-	tiles[start.row+1][start.column] = Global.CardBotReference.new(start, new_card.get_bot_level())
+	var starting_position = Global.starting_position[Global.current_type]
+	new_card.init(
+		0,
+		starting_position.position,
+		starting_position.row,
+		starting_position.column
+	)
+	# Define bot position
+	var bot_row = starting_position.row
+	var bot_col = starting_position.column
+	if starting_position.position == Global.CardPosition.DOWN:
+		bot_row += 1
+	elif starting_position.position == Global.CardPosition.UP:
+		bot_row -= 1
+	elif starting_position.position == Global.CardPosition.LEFT:
+		bot_col -= 1
+	elif starting_position.position == Global.CardPosition.RIGHT:
+		bot_col += 1
+	new_card.set_card_pos(
+		coord_to_vec(starting_position.row,starting_position.column),
+		coord_to_vec(bot_row,bot_col)
+	)
+	tiles[starting_position.row][starting_position.column].queue_free()
+	tiles[bot_row][bot_col].queue_free()
+	tiles[starting_position.row][starting_position.column] = new_card
+	tiles[bot_row][bot_col] = Global.CardBotReference.new(starting_position, new_card.get_bot_level())
 #	print("init_ref: %s %s" % [start.row+1,start.column])
 	
 	self.add_child(new_card)
@@ -93,6 +104,7 @@ func _on_tile_selected(tile):
 	elif current_selected_tile.row != -1: # selecting the highlighted (second) tile
 		reset_tiles(tile)
 		place_card(tile, level)
+		Global.add_availability(level)  # add more card choices
 		reset_select_tile()
 		reset_button()
 		get_parent().deduct_hint()
@@ -161,16 +173,17 @@ func place_card(bot_tile, level):
 			card_pos = Global.CardPosition.LEFT
 	
 	var top = {
-		"x": offset_x + (current_selected_tile.column+0.5)*(Global.tile_size + gap_size),
-		"y": offset_y + (current_selected_tile.row+0.5)*(Global.tile_size + gap_size)
+		"x": offset_x + (current_selected_tile.column)*(Global.tile_size + gap_size),
+		"y": offset_y + (current_selected_tile.row)*(Global.tile_size + gap_size)
 	}
 	var bot = {
-		"x": offset_x + (bot_tile.column+0.5)*(Global.tile_size + gap_size),
-		"y": offset_y + (bot_tile.row+0.5)*(Global.tile_size + gap_size)
+		"x": offset_x + (bot_tile.column)*(Global.tile_size + gap_size),
+		"y": offset_y + (bot_tile.row)*(Global.tile_size + gap_size)
 	}
 	
 	new_card = card.instance()
-	new_card.init(level,card_pos,current_selected_tile.row,current_selected_tile.column)
+	new_card.init(null,card_pos,current_selected_tile.row,current_selected_tile.column)
+	new_card.level = level
 	new_card.set_card_pos(top,bot)
 	
 	tiles[current_selected_tile.row][current_selected_tile.column].queue_free()
@@ -324,7 +337,8 @@ func count_score():
 					if tile.get_class() != right.get_class() and tile.level == right.level:
 						print('score right 1')
 						score += Global.score_inc
-					else:
+					elif tile.row != right.row or tile.column != right.column: 
+						# Adj tile is not the real reference
 						print('penalty right')
 						print(right)
 						print("%s %s" % [right.row,right.column])
@@ -338,7 +352,8 @@ func count_score():
 					if tile.get_class() != up.get_class() and tile.level == up.level:
 						print('score up 1')
 						score += Global.score_inc
-					else:
+					elif tiles[i][j].row != up.row or tiles[i][j].column != up.column: 
+						# Adj tile is not the real reference
 						print('penalty up')
 						print(up)
 						print("%s %s" % [up.row,up.column])
@@ -352,7 +367,8 @@ func count_score():
 					if tile.get_class() != down.get_class() and tile.level == down.level:
 						print('score down 1')
 						score += Global.score_inc
-					else:
+					elif tiles[i][j].row != down.row or tiles[i][j].column != down.column: 
+						# Adj tile is not the real reference
 						print('penalty down')
 						print(down)
 						print("%s %s" % [down.row,down.column])
@@ -366,7 +382,8 @@ func count_score():
 					if tile.get_class() != left.get_class() and tile.level == left.level:
 						print('score left 1')
 						score += Global.score_inc
-					else:
+					elif tiles[i][j].row != left.row or tiles[i][j].column != left.column: 
+						# Adj tile is not the real reference
 						print('penalty left')
 						print(left)
 						print("%s %s" % [left.row,left.column])
