@@ -15,7 +15,7 @@ var selected_card = {
 	"row": -1,
 	"column": -1,
 	"level": -1,
-	"texture": null,
+	"animal_name": null,
 }
 var levels = [1,-1,2,3]
 signal card_selected(card)
@@ -43,18 +43,18 @@ func _on_card_selected(card):
 	if selected_card.row != -1:
 		card_display[selected_card.row][selected_card.column].set_pressed(false)
 		if card.row != selected_card.row or card.column != selected_card.column:
-			select_card(card.row,card.column,card.level,card.get_node("Card").texture)
+			select_card(card.row,card.column,card.level,card.get_node("Card").animal_name)
 		else:
 			select_card(-1,-1,-1,null)
 	else:
-		select_card(card.row,card.column,card.level,card.get_node("Card").texture)
+		select_card(card.row,card.column,card.level,card.get_node("Card").animal_name)
 	get_parent().get_node("TilesManager").set_enable(card.is_pressed())
 
-func select_card(row,column,level,texture):
+func select_card(row,column,level,animal_name):
 	selected_card.row = row
 	selected_card.column = column
 	selected_card.level = level
-	selected_card.texture = texture
+	selected_card.animal_name = animal_name
 	if row == -1:
 		Global.selected_card = null
 	else:
@@ -73,13 +73,13 @@ func reset_button(replace):
 		# Get random level
 		var available_level = Global.available_level
 		var new_level = available_level[randi() % available_level.size()]
-		var card_choices = Global.current_card["top"][new_level].duplicate(true)
+		var card_choices = Global.card_stock[new_level]
 		while card_choices.size() == 0 and available_level.size() > 0:
 			available_level.erase(new_level)
 			if available_level.size() == 0:
 				continue
 			new_level = available_level[randi() % available_level.size()]
-			card_choices = Global.current_card["top"][new_level].duplicate(true)
+			card_choices = Global.card_stock[new_level]
 		
 		if available_level.size() == 0 and card_choices.size() == 0:
 			new_level = -1

@@ -9,7 +9,7 @@ var row = -1
 var column = -1
 var is_reversed = false
 var checked = false
-var texture = null
+var animal_name = ""
 
 func _ready():
 	pass
@@ -24,19 +24,27 @@ func init(level,card_pos,row,column):
 
 func set_level(level):
 	if level == null: # use selected card texture
-		$Top.set_texture(Global.selected_card["texture"])
-		$Bot.set_texture(Global.current_card["bot"][(Global.selected_card["level"]+1) % Global.max_hierarchy[Global.current_type]])
-		return
+		var animal_name = Global.selected_card["animal_name"]
+		level = Global.selected_card["level"]
+		$Top.set_texture(Global.cards[Global.current_type]["top"][level][animal_name])
+		$Bot.set_texture(
+			Global.cards[Global.current_type]["bot"][
+				(level+1) % Global.max_hierarchy[
+					Global.current_type
+				]]
+		)
+		self.animal_name = animal_name
+	else:
+		self.level = level
+		var choices = Global.card_stock[level]
+		var randomizer = randi() % choices.size()
+		var animal_name = choices[randomizer]
+		var bot_level = (level+1) % Global.max_hierarchy[Global.current_type]
 		
-	self.level = level
-#	$Top.set_frame(level%(Global.max_hierarchy[Global.current_type]))
-#	$Bot.set_frame((level+1)%(Global.max_hierarchy[Global.current_type]))
-	var choices = Global.current_card["top"][level]
-	var randomizer = randi() % choices.size()
-	$Top.set_texture(choices[randomizer])
-	$Bot.set_texture(Global.current_card["bot"][(level+1) % Global.max_hierarchy[Global.current_type]])
-	texture = $Top.get_texture()
-	Global.current_card["top"][level].remove(randomizer)
+		$Top.set_texture(Global.current_cards["top"][level][animal_name])
+		$Bot.set_texture(Global.current_cards["bot"][bot_level])
+		self.animal_name = animal_name
+	Global.card_stock[level].erase(self.animal_name)
 
 func get_bot_level():
 	return (level+1)%Global.max_hierarchy[Global.current_type]
@@ -50,6 +58,7 @@ func set_card_pos(top, bot):
 
 func set_reversed(flag):
 	if flag:
-		$Top.set_frame((level+1)%(Global.max_hierarchy[Global.current_type]))
-	$Bot.set_frame((level)%(Global.max_hierarchy[Global.current_type]))
+		var bot_texture = $Bot.get_texture()
+		$Bot.set_texture($Top.get_texture())
+		$Top.set_texture(bot_texture)
 	self.is_reversed = flag

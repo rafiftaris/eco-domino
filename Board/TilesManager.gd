@@ -75,7 +75,7 @@ func _init():
 	tiles[starting_position.row][starting_position.column].queue_free()
 	tiles[bot_row][bot_col].queue_free()
 	tiles[starting_position.row][starting_position.column] = new_card
-	tiles[bot_row][bot_col] = Global.CardBotReference.new(starting_position, new_card.get_bot_level())
+	tiles[bot_row][bot_col] = Global.CardBotReference.new(starting_position, new_card.get_bot_level(), new_card.animal_name)
 #	print("init_ref: %s %s" % [start.row+1,start.column])
 	
 	self.add_child(new_card)
@@ -190,19 +190,24 @@ func place_card(bot_tile, level):
 	tiles[bot_tile.row][bot_tile.column].queue_free()
 	
 	var reversed = false
+
 	for adj_level in current_selected_tile.adj_level:
-		if  adj_level.level == (level+1)%7:
+#		print("%s %s" % [current_selected_tile.row, current_selected_tile.column])
+#		print(tiles[adj_level.row][adj_level.column].get_class())
+#		print(tiles[adj_level.row][adj_level.column] is Node2D)
+		if tiles[adj_level.row][adj_level.column] is Node2D:
 			reversed = true
 			break
+	print(reversed)
 	if reversed:
 #		print("ref_tile: %s %s" % [current_selected_tile.row,current_selected_tile.column])
 		new_card.set_reversed(true)
 		tiles[bot_tile.row][bot_tile.column] = new_card
-		tiles[current_selected_tile.row][current_selected_tile.column] = Global.CardBotReference.new(bot_tile, new_card.get_bot_level())
+		tiles[current_selected_tile.row][current_selected_tile.column] = Global.CardBotReference.new(bot_tile, new_card.get_bot_level(),new_card.animal_name)
 	else:
 #		print("ref_tile: %s %s" % [bot_tile.row,bot_tile.column])
 		tiles[current_selected_tile.row][current_selected_tile.column] = new_card
-		tiles[bot_tile.row][bot_tile.column] = Global.CardBotReference.new(current_selected_tile, new_card.get_bot_level())
+		tiles[bot_tile.row][bot_tile.column] = Global.CardBotReference.new(current_selected_tile, new_card.get_bot_level(),new_card.animal_name)
 	
 	self.add_child(new_card)
 
@@ -315,7 +320,27 @@ func is_adjacent_empty(row,column):
 func give_hint(coords):
 	tiles[coords[0][0]][coords[0][1]].set_highlight(true)
 	tiles[coords[1][0]][coords[1][1]].set_highlight(true)
+
+func can_consume(prey,predator):
+	# Laba-laba cuma bisa makan serangga
+	if predator.animal_name == "laba-laba":
+		return prey.animal_name in Global.animal_categories["serangga"] and prey.level == 2
+	# Ular gabisa makan hewan gede
+	if predator.animal_name == "ular":
+		return not(prey.animal_name in Global.animal_categories["hewan besar"]) and prey.level == 2
+	# Penguin cuma bisa makan ikan
+	if predator.animal_name == "penguin":
+		return prey.animal_name in Global.animal_categories["hewan air"] and prey.level == 2
+	# Produsen air cuma bisa dimakan herbivore air
+	if prey.animal_name in Global.animal_categories["produsen air"]:
+		return predator.animal_name in Global.animal_categories["hewan air"] and predator.level == 1
 	
+	# General consuming terms
+	if prey.level <= 1:
+		return prey.level == predator.level
+	else:
+		return prey.level <= predator.level
+
 func count_score():
 	var score = 0
 	var penalty = 0
@@ -334,10 +359,10 @@ func count_score():
 			if j+1<Global.board_column:
 				var right = tiles[i][j+1]
 				if not right is TextureButton and not (i == right.row and j == right.column) and not right.checked:
-					if tile.get_class() != right.get_class() and tile.level == right.level:
+					if tile.get_class() != right.get_class() and can_consume(tile,right):
 						print('score right 1')
 						score += Global.score_inc
-					elif tile.row != right.row or tile.column != right.column: 
+					else: 
 						# Adj tile is not the real reference
 						print('penalty right')
 						print(right)
@@ -349,10 +374,10 @@ func count_score():
 			if i-1>=0:
 				var up = tiles[i-1][j]
 				if not up is TextureButton and not (i == up.row and j == up.column) and not up.checked:
-					if tile.get_class() != up.get_class() and tile.level == up.level:
+					if tile.get_class() != up.get_class() and can_consume(tile,up):
 						print('score up 1')
 						score += Global.score_inc
-					elif tiles[i][j].row != up.row or tiles[i][j].column != up.column: 
+					else: 
 						# Adj tile is not the real reference
 						print('penalty up')
 						print(up)
@@ -364,10 +389,10 @@ func count_score():
 			if i+1<Global.board_row:
 				var down = tiles[i+1][j]
 				if not down is TextureButton and not (i == down.row and j == down.column) and not down.checked:
-					if tile.get_class() != down.get_class() and tile.level == down.level:
+					if tile.get_class() != down.get_class() and can_consume(tile,down):
 						print('score down 1')
 						score += Global.score_inc
-					elif tiles[i][j].row != down.row or tiles[i][j].column != down.column: 
+					else: 
 						# Adj tile is not the real reference
 						print('penalty down')
 						print(down)
@@ -379,10 +404,10 @@ func count_score():
 			if j-1>=0:
 				var left = tiles[i][j-1]
 				if not left is TextureButton and not (i == left.row and j == left.column) and not left.checked:
-					if tile.get_class() != left.get_class() and tile.level == left.level:
+					if tile.get_class() != left.get_class() and can_consume(tile,left):
 						print('score left 1')
 						score += Global.score_inc
-					elif tiles[i][j].row != left.row or tiles[i][j].column != left.column: 
+					else: 
 						# Adj tile is not the real reference
 						print('penalty left')
 						print(left)
