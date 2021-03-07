@@ -202,6 +202,8 @@ func place_card(bot_tile, level):
 	if reversed:
 #		print("ref_tile: %s %s" % [current_selected_tile.row,current_selected_tile.column])
 		new_card.set_reversed(true)
+		new_card.row = bot_tile.row
+		new_card.column = bot_tile.column
 		tiles[bot_tile.row][bot_tile.column] = new_card
 		tiles[current_selected_tile.row][current_selected_tile.column] = Global.CardBotReference.new(bot_tile, new_card.get_bot_level(),new_card.animal_name)
 	else:
@@ -226,7 +228,7 @@ func scan_highlight(flag):
 					if not self.is_enabled:
 						tiles[i][j].set_pressed(false)
 					tiles[i][j].set_highlight(false)
-			elif not(tiles[i][j] is TextureButton):
+			elif tiles[i][j] is Global.CardBotReference:
 				highlight_adj_tile(i,j,true)
 
 func check_possible_card_placement(row,column):
@@ -321,26 +323,6 @@ func give_hint(coords):
 	tiles[coords[0][0]][coords[0][1]].set_highlight(true)
 	tiles[coords[1][0]][coords[1][1]].set_highlight(true)
 
-func can_consume(prey,predator):
-	# Laba-laba cuma bisa makan serangga
-	if predator.animal_name == "laba-laba":
-		return prey.animal_name in Global.animal_categories["serangga"] and prey.level == 2
-	# Ular gabisa makan hewan gede
-	if predator.animal_name == "ular":
-		return not(prey.animal_name in Global.animal_categories["hewan besar"]) and prey.level == 2
-	# Penguin cuma bisa makan ikan
-	if predator.animal_name == "penguin":
-		return prey.animal_name in Global.animal_categories["hewan air"] and prey.level == 2
-	# Produsen air cuma bisa dimakan herbivore air
-	if prey.animal_name in Global.animal_categories["produsen air"]:
-		return predator.animal_name in Global.animal_categories["hewan air"] and predator.level == 1
-	
-	# General consuming terms
-	if prey.level <= 1:
-		return prey.level == predator.level
-	else:
-		return prey.level <= predator.level
-
 func count_score():
 	var score = 0
 	var penalty = 0
@@ -350,18 +332,20 @@ func count_score():
 	for tile_row in tiles:
 		j = 0
 		for tile in tile_row:
-			if tile is TextureButton or tile.checked:
+			if (not tile is Global.CardBotReference) or tile.checked:
 				j += 1
 				continue
+			score += 10
 				
 			print('coord: %s %s' % [i,j])
 			# Right
 			if j+1<Global.board_column:
 				var right = tiles[i][j+1]
-				if not right is TextureButton and not (i == right.row and j == right.column) and not right.checked:
-					if tile.get_class() != right.get_class() and can_consume(tile,right):
-						print('score right 1')
-						score += Global.score_inc
+				if not right is TextureButton and not (tile.row == right.row and tile.column == right.column):
+					if tile.get_class() != right.get_class() and Global.can_consume(tile,right):
+						if right.level == 0:
+							print('bonus right')
+							score += 10
 					else: 
 						# Adj tile is not the real reference
 						print('penalty right')
@@ -369,29 +353,32 @@ func count_score():
 						print("%s %s" % [right.row,right.column])
 						print(right.level)
 						penalty += Global.wrong_penalty
-						emit_signal("x_mark_spot",coord_to_vec(right.row,right.column))
+						emit_signal("x_mark_spot",right)
 			# Up
 			if i-1>=0:
 				var up = tiles[i-1][j]
-				if not up is TextureButton and not (i == up.row and j == up.column) and not up.checked:
-					if tile.get_class() != up.get_class() and can_consume(tile,up):
-						print('score up 1')
-						score += Global.score_inc
+				if not up is TextureButton and not (tile.row == up.row and tile.column == up.column):
+					if tile.get_class() != up.get_class() and Global.can_consume(tile,up):
+						if up.level == 0:
+							print('bonus up')
+							score += 10
 					else: 
 						# Adj tile is not the real reference
 						print('penalty up')
 						print(up)
+						print("%s %s" % [tile.row,tile.column])
 						print("%s %s" % [up.row,up.column])
 						print(up.level)
 						penalty += Global.wrong_penalty
-						emit_signal("x_mark_spot",coord_to_vec(up.row,up.column))
+						emit_signal("x_mark_spot",up)
 			# Down
 			if i+1<Global.board_row:
 				var down = tiles[i+1][j]
-				if not down is TextureButton and not (i == down.row and j == down.column) and not down.checked:
-					if tile.get_class() != down.get_class() and can_consume(tile,down):
-						print('score down 1')
-						score += Global.score_inc
+				if not down is TextureButton and not (tile.row == down.row and tile.column == down.column):
+					if tile.get_class() != down.get_class() and Global.can_consume(tile,down):
+						if down.level == 0:
+							print('bonus down')
+							score += 10
 					else: 
 						# Adj tile is not the real reference
 						print('penalty down')
@@ -399,14 +386,15 @@ func count_score():
 						print("%s %s" % [down.row,down.column])
 						print(down.level)
 						penalty += Global.wrong_penalty
-						emit_signal("x_mark_spot",coord_to_vec(down.row,down.column))
+						emit_signal("x_mark_spot",down)
 			# Left
 			if j-1>=0:
 				var left = tiles[i][j-1]
-				if not left is TextureButton and not (i == left.row and j == left.column) and not left.checked:
-					if tile.get_class() != left.get_class() and can_consume(tile,left):
-						print('score left 1')
-						score += Global.score_inc
+				if not left is TextureButton and not (tile.row == left.row and tile.column == left.column):
+					if tile.get_class() != left.get_class() and Global.can_consume(tile,left):
+						if left.level == 0:
+							print('bonus left')
+							score += 10
 					else: 
 						# Adj tile is not the real reference
 						print('penalty left')
@@ -414,11 +402,14 @@ func count_score():
 						print("%s %s" % [left.row,left.column])
 						print(left.level)
 						penalty += Global.wrong_penalty
-						emit_signal("x_mark_spot",coord_to_vec(left.row,left.column))
+						emit_signal("x_mark_spot",left)
 						
 			tile.checked = true
 			j += 1
 		i += 1
+	
+	if Global.current_type == Global.TYPE_SAWAH:
+		score = int(float(score*10)/9)
 	
 	return {
 		"score": score,

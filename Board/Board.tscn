@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Board/TilesManager.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Board/CardManager.gd" type="Script" id=2]
@@ -6,13 +6,7 @@
 [ext_resource path="res://Board/Board.gd" type="Script" id=4]
 [ext_resource path="res://Popup/GameOverPopup.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Buttons/HintButton.tscn" type="PackedScene" id=6]
-[ext_resource path="res://Board/TimerText.gd" type="Script" id=7]
-[ext_resource path="res://Fonts/open-sans/OpenSans-Regular.ttf" type="DynamicFontData" id=8]
-[ext_resource path="res://Board/X-MarkManager.gd" type="Script" id=9]
-
-[sub_resource type="DynamicFont" id=1]
-size = 65
-font_data = ExtResource( 8 )
+[ext_resource path="res://Buttons/HomeButton.tscn" type="PackedScene" id=7]
 
 [node name="Board" type="Node2D"]
 scale = Vector2( 1.8, 1.8 )
@@ -23,50 +17,37 @@ script = ExtResource( 4 )
 [node name="CardManager" type="Node2D" parent="."]
 script = ExtResource( 2 )
 
-[node name="X-MarkManager" type="Node2D" parent="."]
-script = ExtResource( 9 )
-
-[node name="Pause" type="Polygon2D" parent="."]
-position = Vector2( 13, 11 )
-polygon = PoolVector2Array( 0, 0, 64, 0, 64, 64, 0, 64 )
-
-[node name="TimerText" type="Label" parent="."]
-margin_left = 384.648
-margin_top = 5.01129
-margin_right = 549.648
-margin_bottom = 95.0113
-custom_fonts/font = SubResource( 1 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "02:00"
-script = ExtResource( 7 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="FinishButton" parent="." instance=ExtResource( 3 )]
-margin_left = 866.0
-margin_top = 516.783
-margin_right = 1056.0
-margin_bottom = 565.783
+margin_left = 976.931
+margin_top = 479.302
+margin_right = 1126.93
+margin_bottom = 554.302
 rect_scale = Vector2( 1.5, 1.5 )
 
 [node name="HintButton" parent="." instance=ExtResource( 6 )]
-margin_left = 866.0
-margin_top = 10.221
-margin_right = 1056.0
-margin_bottom = 59.221
+margin_left = 834.0
+margin_top = 484.0
+margin_right = 902.0
+margin_bottom = 552.0
 rect_scale = Vector2( 1.5, 1.5 )
 
+[node name="HomeButton" parent="." instance=ExtResource( 7 )]
+margin_left = 25.0
+margin_top = 5.0
+margin_right = 105.0
+margin_bottom = 85.0
+
 [node name="GameOverPopup" parent="." instance=ExtResource( 5 )]
-visible = false
 
 [node name="HintTimer" type="Timer" parent="."]
 one_shot = true
 
-[node name="GameTimer" type="Timer" parent="."]
-
 [node name="X-MarkTimer" type="Timer" parent="."]
+
+[node name="PopupDelayTimer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
 [connection signal="x_mark_spot" from="TilesManager" to="." method="_on_TilesManager_x_mark_spot"]
 [connection signal="timeout" from="HintTimer" to="." method="_on_HintTimer_timeout"]
-[connection signal="timeout" from="GameTimer" to="." method="_on_GameTimer_timeout"]
 [connection signal="timeout" from="X-MarkTimer" to="." method="_on_XMarkTimer_timeout"]
+[connection signal="timeout" from="PopupDelayTimer" to="." method="_on_PopupDelayTimer_timeout"]

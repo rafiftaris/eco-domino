@@ -28,6 +28,7 @@ config/icon="res://icon.png"
 [autoload]
 
 Global="*res://Globals/global.gd"
+BgmPlayer="*res://Sounds/BGMPlayer.tscn"
 
 [display]
 

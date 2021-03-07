@@ -4,7 +4,7 @@ var card = preload("res://Buttons/CardSelectButton.tscn")
 
 var card_display = []
 var offset_x = 875
-var offset_y = 100
+var offset_y = 50
 var gap_x = 75
 var gap_y = 125
 
@@ -17,23 +17,26 @@ var selected_card = {
 	"level": -1,
 	"animal_name": null,
 }
-var levels = [1,-1,2,3]
+var levels = [
+	[1],
+	[2,1]
+]
 signal card_selected(card)
 
 func _init():
 	for i in range(Global.card_row):
 		card_display.append([])
 		for j in range(Global.card_column):
+			if i == 0 and j == 1:
+				continue
 			pos_x = offset_x + j*(Global.tile_size + gap_x)
 			pos_y = offset_y + i*(Global.tile_size + gap_y)
 			if i == 0:
 				pos_x = offset_x + (j + 0.5)*(Global.tile_size + gap_x)
 
 			new_card = card.instance()
-			new_card.init(levels[i*2+j],i,j)
+			new_card.init(levels[i][j],i,j)
 			new_card.set_position(Vector2(pos_x,pos_y))
-			if i == 0 and j == 1:
-				new_card.set_visible(false)
 			new_card.connect("card_selected",self,"_on_card_selected")
 			add_child(new_card)
 

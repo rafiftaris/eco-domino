@@ -62,3 +62,9 @@ func set_reversed(flag):
 		$Bot.set_texture($Top.get_texture())
 		$Top.set_texture(bot_texture)
 	self.is_reversed = flag
+
+func x_mark():
+	$Top.modulate.g = 0.5
+	$Top.modulate.b = 0.5
+	$Bot.modulate.g = 0.5
+	$Bot.modulate.b = 0.5

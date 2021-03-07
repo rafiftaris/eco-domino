@@ -5,7 +5,7 @@ signal give_hint
 
 var card_levels = []
 var hint_coord = []
-var x_marks_coord = []
+var x_marks = []
 var x_marks_idx = 0
 var hint_step = 0
 var card_idx = -1
@@ -15,13 +15,11 @@ var scores = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	x_marks_coord = []
+	x_marks = []
 	x_marks_idx = 0
 	scores = 0
 	$FinishButton.connect("finish_game",self,"_on_finish_game")
 	$HintButton.connect("give_hint",self,"_on_give_hint")
-	$TimerText.init_timer()
-	$GameTimer.start()
 
 func show_x_marks():
 	print('showing x marks....')
@@ -29,15 +27,12 @@ func show_x_marks():
 	$"X-MarkTimer".start()
 
 func show_popup():
-	$GameOverPopup.show_score(scores, $TimerText.is_penalty)
+	$GameOverPopup.show_score(scores)
 	var final_score = scores.score - scores.penalty
-	if $TimerText.is_penalty:
-		final_score -= Global.time_penalty
-	Global.save_game(final_score)
+	Global.save_game(max(final_score,0))
 	
 func _on_finish_game():
 	Global.input_enabled = false
-	$GameTimer.stop()
 	show_x_marks()
 
 func _on_give_hint():
@@ -54,6 +49,7 @@ func _on_give_hint():
 				card_idx = -1
 				current_row = tile_row
 				current_column = tile_column
+				print("%s %s" % [current_row, current_column])
 				for idx in range(len(card_levels)):
 					if idx/2 == 0 and idx%2 == 1: # skips invisible button
 						continue
@@ -75,11 +71,12 @@ func _on_give_hint():
 		$HintButton.set_disabled(true)
 
 func check_tile(tile,idx,current_level):
-	var topi = (current_level == (card_levels[idx]+1)%Global.max_hierarchy and tile is Node2D) 
-	var boti = (current_level == (card_levels[idx])%Global.max_hierarchy and tile is Global.CardBotReference)
+	var topi = (current_level == (card_levels[idx]+1)%Global.max_hierarchy[Global.current_type] and tile is Node2D) 
+	var boti = (current_level == (card_levels[idx])%Global.max_hierarchy[Global.current_type] and tile is Global.CardBotReference)
+	var chosen_card = $CardManager.card_display[idx/2][idx%2].get_node("Card")
 	
 #	print("(%s %s) %s %s" % [idx/2,idx%2,card_levels[idx], topi or boti])
-	return (topi or boti)
+	return (topi or boti) and Global.can_consume(tile,chosen_card)
 
 func get_card_levels():
 	card_levels = []
@@ -87,7 +84,7 @@ func get_card_levels():
 		for card in card_row:
 			card_levels.append(card.level)
 			card.set_pressed(false)
-	$CardManager.select_card(-1,-1,-1)
+	$CardManager.select_card(-1,-1,-1, null)
 
 func _on_HintTimer_timeout():
 	if hint_step == 0:
@@ -104,11 +101,6 @@ func _on_HintTimer_timeout():
 		hint_step = 0
 #	print("hint_step: %s"%hint_step)
 
-func _on_GameTimer_timeout():
-	$TimerText.update_timer()
-	if $TimerText.countdown_seconds <= 0:
-		$TimerText.set_penalty(true)
-
 func reset_after_hint():
 	Global.use_hint = true
 	$CardManager.reset_all_buttons(false)
@@ -119,16 +111,26 @@ func reset_after_hint():
 func deduct_hint():
 	if Global.use_hint:
 		$HintButton.deduct_hint()
+		Global.use_hint = false
 
-func _on_TilesManager_x_mark_spot(position):
-	x_marks_coord.append(position)
+func _on_TilesManager_x_mark_spot(card):
+	x_marks.append(card)
 #	print('current_wrong: %s' % len(x_marks_coord))
 
 func _on_XMarkTimer_timeout():
 #	print("x_mark_id: %s" % x_marks_idx)
-	if x_marks_idx == len(x_marks_coord):
+	if len(x_marks) == 0:
 		$"X-MarkTimer".stop()
-		show_popup()
+		$PopupDelayTimer.start(1)
 		return
-	$"X-MarkManager".place_mark(x_marks_coord[x_marks_idx])
+		
+	if x_marks_idx == len(x_marks):
+		$"X-MarkTimer".stop()
+		$PopupDelayTimer.start()
+		return
+		
+	x_marks[x_marks_idx].x_mark()
 	x_marks_idx += 1
+
+func _on_PopupDelayTimer_timeout():
+	show_popup()

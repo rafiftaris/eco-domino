@@ -11,3 +11,4 @@ func _init():
 
 func _ready():
 	$Background.set_texture(Global.background[level])
+	BgmPlayer.set_bgm(BgmPlayer.INGAME)

@@ -41,7 +41,7 @@ const animal_categories = {
 		"fitoplankton", "alga"
 	],
 	"serangga": [
-		"belalang"
+		"belalang", "ulat"
 	],
 	"hewan air": [
 		"ikan kecil", "udang", "gurita", "salmon", 
@@ -59,12 +59,12 @@ const cards = {
 				"padi": preload("res://Card/Asset/sawah/0_padi.png")
 			},
 			{
-				"siput": preload("res://Card/Asset/sawah/1_bekicot.png"),
-				"burung": preload("res://Card/Asset/sawah/1_burung.png"),
+				"ulat": preload("res://Card/Asset/sawah/1_ulat.png"),
 				"belalang": preload("res://Card/Asset/sawah/1_jangkrik.png"),
 				"tikus": preload("res://Card/Asset/sawah/1_tikus.png")
 			},
 			{
+				"burung pipit": preload("res://Card/Asset/sawah/2_burung.png"),
 				"kodok": preload("res://Card/Asset/sawah/2_kodok.png"),
 				"laba-laba": preload("res://Card/Asset/sawah/2_laba-laba.png")
 			},
@@ -298,13 +298,13 @@ enum CardPosition {UP,RIGHT,DOWN,LEFT}
 const starting_position = {
 	TYPE_SAWAH: {
 		"row": 1,
-		"column": 1,
+		"column": 2,
 		"position": CardPosition.DOWN
 	},
 	TYPE_HUTAN: {
-		"row": 0,
-		"column": 0,
-		"position": CardPosition.DOWN
+		"row": 2,
+		"column": 4,
+		"position": CardPosition.RIGHT
 	},
 	TYPE_LAUT: {
 		"row": 2,
@@ -312,23 +312,23 @@ const starting_position = {
 		"position": CardPosition.RIGHT
 	},
 	TYPE_SUNGAI: {
-		"row": 0,
-		"column": 0,
+		"row": 1,
+		"column": 6,
 		"position": CardPosition.DOWN
 	},
 	TYPE_PADANG_RUMPUT: {
-		"row": 0,
-		"column": 0,
+		"row": 1,
+		"column": 4,
 		"position": CardPosition.DOWN
 	},
 	TYPE_PADANG_GURUN: {
-		"row": 0,
+		"row": 2,
 		"column": 0,
-		"position": CardPosition.DOWN
+		"position": CardPosition.RIGHT
 	},
 	TYPE_PADANG_ES: {
-		"row": 0,
-		"column": 0,
+		"row": 1,
+		"column": 3,
 		"position": CardPosition.DOWN
 	}
 }
@@ -339,14 +339,10 @@ var selected_card = {
 	"animal_name": null,
 }
 
-var score_inc = 50
-var wrong_penalty = 50
-var time_penalty = 100
+var wrong_penalty = 10
 
 var input_enabled = true
 var use_hint = false
-var timer_minute = 2
-var timer_seconds = 0
 
 var save_dict = {
 	TYPE_SAWAH: {
@@ -395,13 +391,12 @@ func save_game(score):
 	save_game.close()
 	
 func add_availability(level):
-	var down = (level-1)%max_hierarchy[current_type]
 	var up = (level+1)%max_hierarchy[current_type]
 	
-	if not available_level.has(down):
-		available_level.append(down)
 	if not available_level.has(up):
 		available_level.append(up)
+	if not available_level.has(level):
+		available_level.append(level)
 
 func set_cards(level):
 	card_stock = []
@@ -414,3 +409,26 @@ func set_cards(level):
 			card_stock[i].append(animals[j])
 	
 	current_cards = cards[level]
+
+func can_consume(prey,predator):
+	# Predator khusus pemakan serangga
+	if predator.animal_name in ["laba-laba", "burung pipit", "katak"]:
+		return prey.animal_name in Global.animal_categories["serangga"] and prey.level == 2
+	# Ular gabisa makan hewan gede
+	if predator.animal_name == "ular":
+		if current_type == TYPE_SAWAH:
+			return not(prey.animal_name in Global.animal_categories["hewan besar"]) and prey.level <= 3 and prey.level >= 2
+		else:
+			return not(prey.animal_name in Global.animal_categories["hewan besar"]) and prey.level == 2
+	# Penguin cuma bisa makan ikan
+	if predator.animal_name == "penguin":
+		return prey.animal_name in Global.animal_categories["hewan air"] and prey.level == 2
+	# Produsen air cuma bisa dimakan herbivore air
+	if prey.animal_name in Global.animal_categories["produsen air"]:
+		return predator.animal_name in Global.animal_categories["hewan air"] and predator.level == 1
+	
+	# General consuming terms
+	if prey.level <= 1:
+		return prey.level == predator.level
+	else:
+		return prey.level <= predator.level

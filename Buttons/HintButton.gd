@@ -2,13 +2,13 @@ extends TextureButton
 
 signal give_hint
 
-export var hint_count = 2
+export var hint_count = 5
 
 func _ready():
 	update_text()
 
 func update_text():
-	$Label.set_text("HINT: %s" % hint_count)
+	$Counter.set_text(str(hint_count))
 	
 func _gui_input(event):
 	if event is InputEventScreenTouch and event.is_pressed() and Global.input_enabled and not disabled:
