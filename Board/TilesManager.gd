@@ -3,8 +3,8 @@ extends Node2D
 var tile_button = preload("res://Buttons/TileButton.tscn")
 var card = preload("res://Card/Card.tscn")
 
-var offset_x = 16
-var offset_y = 92
+var offset_x = 28
+var offset_y = 166
 var gap_size = 0
 
 var pos_x = 0
@@ -198,7 +198,7 @@ func place_card(bot_tile, level):
 		if tiles[adj_level.row][adj_level.column] is Node2D:
 			reversed = true
 			break
-	print(reversed)
+#	print(reversed)
 	if reversed:
 #		print("ref_tile: %s %s" % [current_selected_tile.row,current_selected_tile.column])
 		new_card.set_reversed(true)
@@ -343,7 +343,7 @@ func count_score():
 				var right = tiles[i][j+1]
 				if not right is TextureButton and not (tile.row == right.row and tile.column == right.column):
 					if tile.get_class() != right.get_class() and Global.can_consume(tile,right):
-						if right.level == 0:
+						if right.level == 0 and Global.enable_bonus:
 							print('bonus right')
 							score += 10
 					else: 
@@ -359,7 +359,7 @@ func count_score():
 				var up = tiles[i-1][j]
 				if not up is TextureButton and not (tile.row == up.row and tile.column == up.column):
 					if tile.get_class() != up.get_class() and Global.can_consume(tile,up):
-						if up.level == 0:
+						if up.level == 0 and Global.enable_bonus:
 							print('bonus up')
 							score += 10
 					else: 
@@ -376,7 +376,7 @@ func count_score():
 				var down = tiles[i+1][j]
 				if not down is TextureButton and not (tile.row == down.row and tile.column == down.column):
 					if tile.get_class() != down.get_class() and Global.can_consume(tile,down):
-						if down.level == 0:
+						if down.level == 0 and Global.enable_bonus:
 							print('bonus down')
 							score += 10
 					else: 
@@ -392,7 +392,7 @@ func count_score():
 				var left = tiles[i][j-1]
 				if not left is TextureButton and not (tile.row == left.row and tile.column == left.column):
 					if tile.get_class() != left.get_class() and Global.can_consume(tile,left):
-						if left.level == 0:
+						if left.level == 0 and Global.enable_bonus:
 							print('bonus left')
 							score += 10
 					else: 
@@ -415,3 +415,9 @@ func count_score():
 		"score": score,
 		"penalty": penalty
 	}
+
+func enable_input(enable):
+	for i in range(Global.board_row):
+		for j in range(Global.board_column):
+			if tiles[i][j] is TextureButton:
+				tiles[i][j].enable_input(enable)

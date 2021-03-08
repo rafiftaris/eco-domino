@@ -1,16 +1,17 @@
 extends TextureButton
 
-const hl_texture = preload("res://Buttons/Assets/PNG/blue_button10.png")
-const normal_texture = preload("res://Buttons/Assets/PNG/grey_button10.png")
+const hl_texture = preload("res://Buttons/Assets/Custom/TileSelectHighlight.png")
+const normal_texture = preload("res://Buttons/Assets/Custom/TileSelect.png")
 
 signal tile_selected(tile)
 
 var row
 var column
 var highlight = false
+var input_enabled = true
 
 func _gui_input(event):
-	if event is InputEventScreenTouch and event.is_pressed() and Global.input_enabled:
+	if event is InputEventScreenTouch and event.is_pressed() and Global.input_enabled and input_enabled:
 		_pressed()
 
 func init(row, column):
@@ -33,3 +34,6 @@ func set_highlight(flag):
 	else:
 		set_normal_texture(normal_texture)
 	self.highlight = flag
+
+func enable_input(enable):
+	input_enabled = enable

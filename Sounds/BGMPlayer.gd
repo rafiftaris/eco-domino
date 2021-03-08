@@ -5,7 +5,7 @@ var main_menu = preload("res://Sounds/Assets/Intro (online-audio-converter.com).
 
 enum{MAIN_MENU,INGAME}
 var state = null
-var is_muted = true
+var is_muted = false
 
 func set_bgm(state):
 	if self.state == state or is_muted:

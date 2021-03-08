@@ -7,6 +7,7 @@ var offset_x = 875
 var offset_y = 50
 var gap_x = 75
 var gap_y = 125
+var input_enabled = true
 
 var pos_x = 0
 var pos_y = 0
@@ -75,6 +76,7 @@ func reset_button(replace):
 	if replace:
 		# Get random level
 		var available_level = Global.available_level
+		var max_level = Global.available_level.max()
 		var new_level = available_level[randi() % available_level.size()]
 		var card_choices = Global.card_stock[new_level]
 		while card_choices.size() == 0 and available_level.size() > 0:
@@ -85,8 +87,26 @@ func reset_button(replace):
 			card_choices = Global.card_stock[new_level]
 		
 		if available_level.size() == 0 and card_choices.size() == 0:
-			new_level = -1
+			# Trying to get higher level
+			max_level = (max_level+1)%Global.max_hierarchy[Global.current_type]
+			var alt_found = false
+			for i in range(Global.max_hierarchy[Global.current_type]):
+				card_choices = Global.card_stock[max_level]
+				if card_choices.size() > 0:
+					new_level = max_level
+					alt_found = true
+					break
+				max_level = (max_level+1)%Global.max_hierarchy[Global.current_type]
+			if not alt_found:
+				new_level = -1
 		
 		card_display[selected_card.row][selected_card.column].set_level(new_level)
 #		print("new card level: %s" % new_level)
 	select_card(-1,-1,-1,null)
+
+func enable_input(enable):
+	for i in range(Global.card_row):
+		for j in range(Global.card_column):
+			if i == 0 and j == 1:
+				continue
+			card_display[i][j].enable_input(enable)

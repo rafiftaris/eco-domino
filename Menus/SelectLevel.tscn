@@ -21,7 +21,6 @@ margin_left = 425.0
 margin_top = 150.0
 margin_right = 577.0
 margin_bottom = 281.0
-rect_scale = Vector2( 1.75, 1.75 )
 eco_type = "sawah"
 
 [node name="LevelSelect2" parent="." instance=ExtResource( 2 )]
@@ -29,7 +28,6 @@ margin_left = 582.0
 margin_top = 415.0
 margin_right = 734.0
 margin_bottom = 546.0
-rect_scale = Vector2( 1.75, 1.75 )
 eco_type = "laut"
 
 [node name="LevelSelect3" parent="." instance=ExtResource( 2 )]
@@ -37,7 +35,6 @@ margin_left = 747.0
 margin_top = 145.0
 margin_right = 899.0
 margin_bottom = 276.0
-rect_scale = Vector2( 1.75, 1.75 )
 eco_type = "hutan"
 
 [node name="LevelSelect4" parent="." instance=ExtResource( 2 )]
@@ -45,7 +42,6 @@ margin_left = 912.234
 margin_top = 415.0
 margin_right = 1064.23
 margin_bottom = 546.0
-rect_scale = Vector2( 1.75, 1.75 )
 eco_type = "padang rumput"
 
 [node name="LevelSelect5" parent="." instance=ExtResource( 2 )]
@@ -53,7 +49,6 @@ margin_left = 1078.0
 margin_top = 145.0
 margin_right = 1230.0
 margin_bottom = 276.0
-rect_scale = Vector2( 1.75, 1.75 )
 eco_type = "padang gurun"
 
 [node name="LevelSelect6" parent="." instance=ExtResource( 2 )]
@@ -61,7 +56,6 @@ margin_left = 1255.0
 margin_top = 415.0
 margin_right = 1407.0
 margin_bottom = 546.0
-rect_scale = Vector2( 1.75, 1.75 )
 eco_type = "padang es"
 
 [node name="LevelSelect7" parent="." instance=ExtResource( 2 )]
@@ -69,7 +63,6 @@ margin_left = 1415.0
 margin_top = 145.0
 margin_right = 1567.0
 margin_bottom = 276.0
-rect_scale = Vector2( 1.75, 1.75 )
 eco_type = "sungai"
 
 [node name="HomeButton" parent="." instance=ExtResource( 3 )]

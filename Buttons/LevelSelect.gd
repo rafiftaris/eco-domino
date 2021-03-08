@@ -7,7 +7,7 @@ func _ready():
 	var level_score = Global.save_dict[eco_type]["score"]
 	var has_been_played = Global.save_dict[eco_type]["has_been_played"]
 	if not has_been_played:
-		$Label.set_size(Vector2($Label.get_size().x,110))
+		$Label.set_size(Vector2($Label.get_size().x,173))
 		$ScoreBoard.set_visible(false)
 		$Score.set_visible(false)
 	else:

@@ -6,9 +6,10 @@ var level = -1
 var row = -1
 var column = -1
 var is_hinted = false
+var input_enabled = true
 
 func _gui_input(event):
-	if event is InputEventScreenTouch and event.is_pressed() and Global.input_enabled:
+	if event is InputEventScreenTouch and event.is_pressed() and Global.input_enabled and input_enabled:
 		_pressed()
 
 func _ready():
@@ -59,4 +60,7 @@ func simulate_press(flag):
 	if not flag:
 		delta *= -1
 	$Card.set_position(Vector2($Card.get_position()) + delta)
+
+func enable_input(enable):
+	input_enabled = enable
 

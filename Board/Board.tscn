@@ -9,7 +9,6 @@
 [ext_resource path="res://Buttons/HomeButton.tscn" type="PackedScene" id=7]
 
 [node name="Board" type="Node2D"]
-scale = Vector2( 1.8, 1.8 )
 script = ExtResource( 4 )
 
 [node name="TilesManager" parent="." instance=ExtResource( 1 )]
@@ -18,24 +17,24 @@ script = ExtResource( 4 )
 script = ExtResource( 2 )
 
 [node name="FinishButton" parent="." instance=ExtResource( 3 )]
-margin_left = 976.931
-margin_top = 479.302
-margin_right = 1126.93
-margin_bottom = 554.302
+margin_left = 1727.36
+margin_top = 837.599
+margin_right = 2027.36
+margin_bottom = 982.599
 rect_scale = Vector2( 1.5, 1.5 )
 
 [node name="HintButton" parent="." instance=ExtResource( 6 )]
-margin_left = 834.0
-margin_top = 484.0
-margin_right = 902.0
-margin_bottom = 552.0
-rect_scale = Vector2( 1.5, 1.5 )
+margin_left = 1500.69
+margin_top = 856.242
+margin_right = 1700.69
+margin_bottom = 1056.24
 
 [node name="HomeButton" parent="." instance=ExtResource( 7 )]
-margin_left = 25.0
-margin_top = 5.0
-margin_right = 105.0
-margin_bottom = 85.0
+margin_left = 35.0
+margin_top = 15.0
+margin_right = 285.0
+margin_bottom = 255.0
+rect_scale = Vector2( 0.6, 0.6 )
 
 [node name="GameOverPopup" parent="." instance=ExtResource( 5 )]
 

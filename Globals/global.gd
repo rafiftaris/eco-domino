@@ -278,7 +278,7 @@ var card_stock = null
 var available_level = [1]
 var current_cards = null
 
-const tile_size = 100
+const tile_size = 180
 const board_row = 5
 const board_column = 8
 const card_row = 2
@@ -303,7 +303,7 @@ const starting_position = {
 	},
 	TYPE_HUTAN: {
 		"row": 2,
-		"column": 4,
+		"column": 0,
 		"position": CardPosition.RIGHT
 	},
 	TYPE_LAUT: {
@@ -313,7 +313,7 @@ const starting_position = {
 	},
 	TYPE_SUNGAI: {
 		"row": 1,
-		"column": 6,
+		"column": 2,
 		"position": CardPosition.DOWN
 	},
 	TYPE_PADANG_RUMPUT: {
@@ -340,7 +340,7 @@ var selected_card = {
 }
 
 var wrong_penalty = 10
-
+var enable_bonus = true
 var input_enabled = true
 var use_hint = false
 

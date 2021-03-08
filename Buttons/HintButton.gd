@@ -2,7 +2,7 @@ extends TextureButton
 
 signal give_hint
 
-export var hint_count = 5
+export var hint_count = 2
 
 func _ready():
 	update_text()

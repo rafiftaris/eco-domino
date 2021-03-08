@@ -8,6 +8,7 @@ extends Control
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	Global.input_enabled = true
 	BgmPlayer.set_bgm(BgmPlayer.MAIN_MENU)
 
 
