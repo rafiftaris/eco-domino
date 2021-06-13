@@ -64,3 +64,6 @@ func simulate_press(flag):
 func enable_input(enable):
 	input_enabled = enable
 
+func set_animal(animal_data):
+	self.level = animal_data.level
+	$Card.set_animal(animal_data)

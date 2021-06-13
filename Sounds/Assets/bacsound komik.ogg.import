@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/bacsound komik.ogg-7292da6f487a6205e9e6b3e39bbf256c.oggstr"
+
+[deps]
+
+source_file="res://Sounds/Assets/bacsound komik.ogg"
+dest_files=[ "res://.import/bacsound komik.ogg-7292da6f487a6205e9e6b3e39bbf256c.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

@@ -8,4 +8,5 @@ func _gui_input(event):
 		
 func _pressed():
 	set_pressed(true)
+	SfxPlayer.play_sfx(SfxPlayer.CLICK)
 	emit_signal("finish_game")

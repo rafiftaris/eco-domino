@@ -21,14 +21,18 @@ _global_script_class_icons={
 [application]
 
 config/name="Domino Ekosistem"
-run/main_scene="res://Menus/MainMenu.tscn"
-boot_splash/image="res://Backgrounds/Cover.png"
+run/main_scene="res://Menus/LoadingScreen.tscn"
+boot_splash/image="res://Backgrounds/Loading.png"
 config/icon="res://icon.png"
+config/auto_accept_quit=false
+config/quit_on_go_back=false
 
 [autoload]
 
 Global="*res://Globals/global.gd"
-BgmPlayer="*res://Sounds/BGMPlayer.tscn"
+BgmPlayer="*res://Sounds/BGMPlayer.gd"
+SfxPlayer="*res://Sounds/SFXPlayer.gd"
+Transit="*res://addons/transit/Transit.tscn"
 
 [display]
 

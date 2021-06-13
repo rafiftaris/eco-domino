@@ -20,6 +20,7 @@ var current_selected_tile = {
 	"column": -1,
 	"adj_level": -1 
 }
+var last_move
 var tiles = []
 signal tile_selected(tile)
 
@@ -34,18 +35,22 @@ func reset_select_tile():
 	current_selected_tile.column = -1
 	current_selected_tile.adj_level = -1
 
+func create_new_tile_button(row,col):
+	pos_x = offset_x + col*(Global.tile_size + gap_size)
+	pos_y = offset_y + row*(Global.tile_size + gap_size)
+	
+	new_tile = tile_button.instance()
+	new_tile.init(row,col)
+	new_tile.set_position(Vector2(pos_x,pos_y))
+	new_tile.connect("tile_selected",self,"_on_tile_selected")
+	add_child(new_tile)
+	return new_tile
+
 func _init():
 	for i in range(Global.board_row):
 		tiles.append([])
 		for j in range(Global.board_column):
-			pos_x = offset_x + j*(Global.tile_size + gap_size)
-			pos_y = offset_y + i*(Global.tile_size + gap_size)
-			
-			new_tile = tile_button.instance()
-			new_tile.init(i,j)
-			new_tile.set_position(Vector2(pos_x,pos_y))
-			new_tile.connect("tile_selected",self,"_on_tile_selected")
-			add_child(new_tile)
+			new_tile = create_new_tile_button(i,j)
 			
 			tiles[i].append(new_tile)
 	
@@ -57,6 +62,7 @@ func _init():
 		starting_position.row,
 		starting_position.column
 	)
+	new_card.set_scale(Vector2(float(Global.tile_size)/256,float(Global.tile_size)/256))
 	# Define bot position
 	var bot_row = starting_position.row
 	var bot_col = starting_position.column
@@ -102,12 +108,14 @@ func _on_tile_selected(tile):
 		highlight_adj_tile(tile.row, tile.column, tile.is_pressed())
 		get_adj_level(tile.row,tile.column)
 	elif current_selected_tile.row != -1: # selecting the highlighted (second) tile
+		save_last_move(tile.row,tile.column)
 		reset_tiles(tile)
 		place_card(tile, level)
 		Global.add_availability(level)  # add more card choices
 		reset_select_tile()
 		reset_button()
 		get_parent().deduct_hint()
+		get_parent().show_undo()
 
 func highlight_adj_tile(row, column, flag):
 	# Down
@@ -156,7 +164,8 @@ func get_adj_level(row, column):
 	current_selected_tile.adj_level = adj
 
 func reset_tiles(next_tile):
-	tiles[next_tile.row][next_tile.column].set_pressed(false)
+	if next_tile != null:
+		tiles[next_tile.row][next_tile.column].set_pressed(false)
 	tiles[current_selected_tile.row][current_selected_tile.column].set_pressed(false)
 	highlight_adj_tile(current_selected_tile.row, current_selected_tile.column, false)
 	
@@ -172,19 +181,14 @@ func place_card(bot_tile, level):
 		elif bot_tile.column < current_selected_tile.column:
 			card_pos = Global.CardPosition.LEFT
 	
-	var top = {
-		"x": offset_x + (current_selected_tile.column)*(Global.tile_size + gap_size),
-		"y": offset_y + (current_selected_tile.row)*(Global.tile_size + gap_size)
-	}
-	var bot = {
-		"x": offset_x + (bot_tile.column)*(Global.tile_size + gap_size),
-		"y": offset_y + (bot_tile.row)*(Global.tile_size + gap_size)
-	}
+	var top = coord_to_vec(current_selected_tile.row,current_selected_tile.column)
+	var bot = coord_to_vec(bot_tile.row, bot_tile.column)
 	
 	new_card = card.instance()
 	new_card.init(null,card_pos,current_selected_tile.row,current_selected_tile.column)
 	new_card.level = level
 	new_card.set_card_pos(top,bot)
+	new_card.set_scale(Vector2(float(Global.tile_size)/256,float(Global.tile_size)/256))
 	
 	tiles[current_selected_tile.row][current_selected_tile.column].queue_free()
 	tiles[bot_tile.row][bot_tile.column].queue_free()
@@ -201,7 +205,6 @@ func place_card(bot_tile, level):
 #	print(reversed)
 	if reversed:
 #		print("ref_tile: %s %s" % [current_selected_tile.row,current_selected_tile.column])
-		new_card.set_reversed(true)
 		new_card.row = bot_tile.row
 		new_card.column = bot_tile.column
 		tiles[bot_tile.row][bot_tile.column] = new_card
@@ -214,6 +217,7 @@ func place_card(bot_tile, level):
 	self.add_child(new_card)
 
 func reset_button():
+	get_parent().get_node("CardManager").save_last_move()
 	get_parent().get_node("CardManager").reset_button(true)
 	
 func set_enable(flag):
@@ -328,6 +332,7 @@ func count_score():
 	var penalty = 0
 	var i = 0
 	var j = 0
+	var card_placed = 0
 	
 	for tile_row in tiles:
 		j = 0
@@ -336,6 +341,7 @@ func count_score():
 				j += 1
 				continue
 			score += 10
+			card_placed += 1
 				
 			print('coord: %s %s' % [i,j])
 			# Right
@@ -411,6 +417,9 @@ func count_score():
 	if Global.current_type == Global.TYPE_SAWAH:
 		score = int(float(score*10)/9)
 	
+	if card_placed <= 1:
+		score = 0
+	
 	return {
 		"score": score,
 		"penalty": penalty
@@ -421,3 +430,26 @@ func enable_input(enable):
 		for j in range(Global.board_column):
 			if tiles[i][j] is TextureButton:
 				tiles[i][j].enable_input(enable)
+
+func save_last_move(row,column):
+	last_move = {
+		"row": row,
+		"column": column
+	}
+	
+func undo_move():
+	reset_tiles(null)
+	reset_select_tile()
+	var reference = tiles[last_move.row][last_move.column]
+	var card = tiles[reference.row][reference.column]
+	var animal_name = card.animal_name
+	var level = card.level
+	tiles[last_move.row][last_move.column] = create_new_tile_button(last_move.row,last_move.column)
+	tiles[reference.row][reference.column] = create_new_tile_button(reference.row,reference.column)
+	remove_child(card)
+	card.queue_free()
+	
+	return {
+		"animal_name": animal_name,
+		"level": level
+	}

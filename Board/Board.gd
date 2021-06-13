@@ -143,6 +143,10 @@ func deduct_hint():
 		$HintButton.deduct_hint()
 		Global.use_hint = false
 
+func show_undo():
+	$UndoButton.set_disabled(false)
+	$UndoButton.set_visible(true)
+
 func _on_TilesManager_x_mark_spot(card):
 	x_marks.append(card)
 #	print('current_wrong: %s' % len(x_marks_coord))
@@ -164,3 +168,7 @@ func _on_XMarkTimer_timeout():
 
 func _on_PopupDelayTimer_timeout():
 	show_popup()
+
+func _on_UndoButton_pressed():
+	var animal_data = $TilesManager.undo_move()
+	$CardManager.undo_move(animal_data)

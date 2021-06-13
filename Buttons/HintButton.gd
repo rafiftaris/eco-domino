@@ -15,6 +15,7 @@ func _gui_input(event):
 		_pressed()
 
 func _pressed():
+	SfxPlayer.play_sfx(SfxPlayer.CLICK)
 	Global.input_enabled = false
 	set_pressed(true)
 	emit_signal("give_hint")

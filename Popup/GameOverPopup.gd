@@ -8,6 +8,7 @@ func _ready():
 	$OvertimeText.set_visible(false)
 
 func show_score(scores):
+	SfxPlayer.play_sfx(SfxPlayer.SCORE)
 	var total = scores.score - scores.penalty
 	set_visible(true)
 	$ScoreNumber.set_text(str(scores.score))

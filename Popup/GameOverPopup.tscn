@@ -1,41 +1,43 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=9 format=2]
 
-[ext_resource path="res://Buttons/Assets/PNG/green_button05.png" type="Texture" id=1]
-[ext_resource path="res://Buttons/Assets/PNG/green_button04.png" type="Texture" id=2]
+[ext_resource path="res://Buttons/Assets/Custom/Selesai.png" type="Texture" id=1]
+[ext_resource path="res://Popup/Assets/Popup Board.png" type="Texture" id=2]
 [ext_resource path="res://Popup/GameOverPopup.gd" type="Script" id=3]
 [ext_resource path="res://Buttons/NavigationButton.gd" type="Script" id=4]
-[ext_resource path="res://Fonts/open-sans/OpenSans-Regular.ttf" type="DynamicFontData" id=5]
 [ext_resource path="res://Fonts/BOLD/HomepageBaukasten-Bold.ttf" type="DynamicFontData" id=6]
 [ext_resource path="res://Fonts/BOLD/HomepageBaukasten-Bold.otf" type="DynamicFontData" id=7]
 
 [sub_resource type="DynamicFont" id=1]
 size = 80
+outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 6 )
 
 [sub_resource type="DynamicFont" id=2]
 size = 70
 font_data = ExtResource( 7 )
 
-[sub_resource type="DynamicFont" id=3]
-size = 19
-font_data = ExtResource( 5 )
-
 [node name="GameOverPopup" type="PopupDialog"]
 margin_left = 359.0
-margin_top = 95.0
+margin_top = 96.4984
 margin_right = 1864.0
-margin_bottom = 957.0
+margin_bottom = 958.498
 script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Board" type="Sprite" parent="."]
+position = Vector2( 751.729, 451.141 )
+scale = Vector2( 0.45, 0.45 )
+texture = ExtResource( 2 )
+
 [node name="GameOverText" type="Label" parent="."]
-margin_left = 2.00452
-margin_top = 86.6742
+margin_left = 2.005
+margin_top = 100.0
 margin_right = 1503.0
-margin_bottom = 175.674
+margin_bottom = 189.0
 custom_fonts/font = SubResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "GAME OVER"
 align = 1
 valign = 1
@@ -44,11 +46,12 @@ __meta__ = {
 }
 
 [node name="ScoreText" type="Label" parent="."]
-margin_left = 535.362
+margin_left = 517.901
 margin_top = 256.652
-margin_right = 790.362
+margin_right = 772.901
 margin_bottom = 335.652
 custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "SCORE"
 align = 1
 valign = 1
@@ -57,33 +60,35 @@ __meta__ = {
 }
 
 [node name="ScoreNumber" type="Label" parent="."]
-margin_left = 905.362
-margin_top = 256.652
-margin_right = 956.362
-margin_bottom = 335.652
+margin_left = 892.0
+margin_top = 261.0
+margin_right = 998.0
+margin_bottom = 340.0
 custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "0"
-align = 1
+align = 2
 valign = 1
 
 [node name="PenaltyText" type="Label" parent="."]
-margin_left = 535.362
+margin_left = 517.901
 margin_top = 366.652
-margin_right = 835.362
+margin_right = 817.901
 margin_bottom = 445.652
 custom_fonts/font = SubResource( 2 )
-text = "WRONG"
-align = 1
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "SALAH"
 valign = 1
 
 [node name="PenaltyNumber" type="Label" parent="."]
-margin_left = 905.362
-margin_top = 366.652
-margin_right = 956.362
-margin_bottom = 445.652
+margin_left = 888.0
+margin_top = 367.0
+margin_right = 1001.0
+margin_bottom = 446.0
 custom_fonts/font = SubResource( 2 )
-text = "0"
-align = 1
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "-0"
+align = 2
 valign = 1
 
 [node name="OvertimeText" type="Label" parent="."]
@@ -93,6 +98,7 @@ margin_top = 490.0
 margin_right = 565.0
 margin_bottom = 505.0
 custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "PENALTY"
 align = 1
 valign = 1
@@ -104,54 +110,50 @@ margin_top = 490.0
 margin_right = 920.0
 margin_bottom = 504.0
 custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "0"
 align = 1
 valign = 1
 
 [node name="TotalText" type="Label" parent="."]
-margin_left = 535.362
-margin_top = 586.652
-margin_right = 783.362
-margin_bottom = 665.652
+margin_left = 517.901
+margin_top = 525.0
+margin_right = 765.901
+margin_bottom = 604.0
 custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "TOTAL"
 align = 1
 valign = 1
-
-[node name="TotalNumber" type="Label" parent="."]
-margin_left = 905.362
-margin_top = 586.652
-margin_right = 956.362
-margin_bottom = 665.652
-custom_fonts/font = SubResource( 2 )
-text = "0"
-align = 1
-valign = 1
-
-[node name="PopupBackButton" type="TextureButton" parent="."]
-margin_left = 520.0
-margin_top = 700.0
-margin_right = 710.0
-margin_bottom = 749.0
-rect_scale = Vector2( 2.5, 2.5 )
-action_mode = 0
-button_mask = 0
-texture_normal = ExtResource( 2 )
-texture_pressed = ExtResource( 1 )
-script = ExtResource( 4 )
-path_to_new_scene = "res://Menus/MainMenu.tscn"
-
-[node name="BackButtonText" type="Label" parent="PopupBackButton"]
-margin_left = 1.0
-margin_top = 2.0
-margin_right = 126.0
-margin_bottom = 30.0
-rect_scale = Vector2( 1.5, 1.5 )
-custom_fonts/font = SubResource( 3 )
-text = "KEMBALI"
-align = 1
-valign = 1
-autowrap = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="TotalNumber" type="Label" parent="."]
+margin_left = 883.0
+margin_top = 525.0
+margin_right = 989.0
+margin_bottom = 604.0
+custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "0"
+align = 2
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PopupBackButton" type="TextureButton" parent="."]
+margin_left = 540.347
+margin_top = 623.633
+margin_right = 840.347
+margin_bottom = 768.633
+rect_scale = Vector2( 1.5, 1.5 )
+action_mode = 0
+button_mask = 0
+texture_normal = ExtResource( 1 )
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+path_to_new_scene = "res://Menus/SelectLevel.tscn"

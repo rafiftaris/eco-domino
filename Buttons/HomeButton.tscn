@@ -13,4 +13,4 @@ script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-path_to_new_scene = "res://Menus/MainMenu.tscn"
+path_to_new_scene = "res://Menus/MainMenu2.tscn"

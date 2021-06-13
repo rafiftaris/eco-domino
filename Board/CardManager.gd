@@ -3,16 +3,23 @@ extends Node2D
 var card = preload("res://Buttons/CardSelectButton.tscn")
 
 var card_display = []
-var offset_x = 875
-var offset_y = 50
-var gap_x = 75
-var gap_y = 125
+var offset_x = 1575
+var offset_y = 30
+var gap_x = 135
+var gap_y = 225
 var input_enabled = true
 
 var pos_x = 0
 var pos_y = 0
+var scale_ratio = 0.5
 var new_card
 var selected_card = {
+	"row": -1,
+	"column": -1,
+	"level": -1,
+	"animal_name": null,
+}
+var last_move = {
 	"row": -1,
 	"column": -1,
 	"level": -1,
@@ -38,6 +45,8 @@ func _init():
 			new_card = card.instance()
 			new_card.init(levels[i][j],i,j)
 			new_card.set_position(Vector2(pos_x,pos_y))
+			new_card.set_scale(Vector2(scale_ratio,scale_ratio))
+			new_card.get_node("Card").set_base()
 			new_card.connect("card_selected",self,"_on_card_selected")
 			add_child(new_card)
 
@@ -110,3 +119,16 @@ func enable_input(enable):
 			if i == 0 and j == 1:
 				continue
 			card_display[i][j].enable_input(enable)
+
+func save_last_move():
+	last_move = selected_card.duplicate()
+
+func undo_move(animal_data):
+	reset_button(false)
+	var last_card = card_display[last_move.row][last_move.column]
+	var last_animal_name = last_card.get_node("Card").animal_name
+	var last_level = last_card.level
+	
+	Global.card_stock[last_level].append(last_animal_name)
+	
+	card_display[last_move.row][last_move.column].set_animal(animal_data)

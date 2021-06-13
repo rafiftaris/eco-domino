@@ -1,0 +1,43 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Backgrounds/1.jpg" type="Texture" id=1]
+[ext_resource path="res://Buttons/NextButton.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Buttons/NextButton.gd" type="Script" id=3]
+[ext_resource path="res://Menus/Comic.gd" type="Script" id=4]
+[ext_resource path="res://Backgrounds/3.jpg" type="Texture" id=5]
+[ext_resource path="res://Backgrounds/2.jpg" type="Texture" id=6]
+
+[node name="Comic" type="Control"]
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ComicSlide1" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+centered = false
+
+[node name="ComicSlide2" type="Sprite" parent="."]
+position = Vector2( 2220, 0 )
+texture = ExtResource( 6 )
+centered = false
+
+[node name="ComicSlide3" type="Sprite" parent="."]
+position = Vector2( 4440, 0 )
+texture = ExtResource( 5 )
+centered = false
+
+[node name="NextButton" parent="." instance=ExtResource( 2 )]
+margin_left = 1037.06
+margin_top = 900.446
+margin_right = -427.94
+margin_bottom = 575.446
+rect_scale = Vector2( 0.2, 0.2 )
+script = ExtResource( 3 )
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+[connection signal="pressed" from="NextButton" to="." method="_on_NextButton_pressed"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

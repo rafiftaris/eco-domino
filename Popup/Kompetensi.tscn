@@ -1,0 +1,146 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://Buttons/Assets/Custom/Selesai.png" type="Texture" id=1]
+[ext_resource path="res://Popup/Assets/Popup Board.png" type="Texture" id=2]
+[ext_resource path="res://Fonts/BOLD/HomepageBaukasten-Bold.otf" type="DynamicFontData" id=3]
+[ext_resource path="res://Popup/ClosePopup.gd" type="Script" id=4]
+[ext_resource path="res://Popup/Kompetensi.gd" type="Script" id=5]
+[ext_resource path="res://Fonts/BOOK/HomepageBaukasten-Book.otf" type="DynamicFontData" id=6]
+
+[sub_resource type="DynamicFont" id=1]
+size = 30
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 30
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 30
+font_data = ExtResource( 6 )
+
+[node name="Kompetensi" type="PopupDialog"]
+visible = true
+margin_left = 592.919
+margin_top = 162.98
+margin_right = 1737.92
+margin_bottom = 867.98
+script = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( -155.823, -101.885 )
+scale = Vector2( 0.32262, 0.388977 )
+texture = ExtResource( 2 )
+centered = false
+
+[node name="Title" type="RichTextLabel" parent="."]
+margin_left = -22.0
+margin_top = 16.0
+margin_right = 1139.0
+margin_bottom = 95.0
+custom_fonts/normal_font = SubResource( 1 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]Tema 5 “Ekosistem” 
+Subtema 2 “Hubungan antara makhluk hidup dalam ekosistem” [/center]"
+text = "Tema 5 “Ekosistem” 
+Subtema 2 “Hubungan antara makhluk hidup dalam ekosistem” "
+fit_content_height = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Header1" type="RichTextLabel" parent="."]
+margin_left = -25.0
+margin_top = 131.0
+margin_right = 1213.0
+margin_bottom = 184.0
+custom_fonts/normal_font = SubResource( 2 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+text = "Kompetensi Dasar		:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Content1" type="RichTextLabel" parent="."]
+margin_left = -27.0
+margin_top = 176.0
+margin_right = 1211.0
+margin_bottom = 254.0
+custom_fonts/normal_font = SubResource( 3 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+text = "3.5. Menganalisis hubungan antar komponen ekosistem dan jaring-jaring makanan dilingkungan sekitar."
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Header2" type="RichTextLabel" parent="."]
+margin_left = -27.0
+margin_top = 262.0
+margin_right = 1211.0
+margin_bottom = 315.0
+custom_fonts/normal_font = SubResource( 2 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+text = "Indikator						: "
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Content2" type="RichTextLabel" parent="."]
+margin_left = -27.0
+margin_top = 307.0
+margin_right = 1211.0
+margin_bottom = 354.0
+custom_fonts/normal_font = SubResource( 3 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+text = "3.5.1 Menganalisis rantai makanan pala sebuah ekosistem "
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Header3" type="RichTextLabel" parent="."]
+margin_left = -30.0
+margin_top = 360.0
+margin_right = 1208.0
+margin_bottom = 413.0
+custom_fonts/normal_font = SubResource( 2 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+text = "Tujuan Pembelajaran	:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Content3" type="RichTextLabel" parent="."]
+margin_left = -32.0
+margin_top = 405.0
+margin_right = 1206.0
+margin_bottom = 591.0
+custom_fonts/normal_font = SubResource( 3 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "3.5.1.1 Peserta didik dapat menyusun rantai makanan pada suatu ekosistem dengan benar
+
+3.5.1.2 Peserta didik dapat menyimpulkan proses rantai makanan pada suatu ekosistem"
+text = "3.5.1.1 Peserta didik dapat menyusun rantai makanan pada suatu ekosistem dengan benar
+
+3.5.1.2 Peserta didik dapat menyimpulkan proses rantai makanan pada suatu ekosistem"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ClosePopup" type="TextureButton" parent="."]
+margin_left = 422.418
+margin_top = 544.309
+margin_right = 722.418
+margin_bottom = 689.309
+action_mode = 0
+button_mask = 0
+texture_normal = ExtResource( 1 )
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="ClosePopup" to="." method="_on_ClosePopup_pressed"]

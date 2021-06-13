@@ -53,230 +53,173 @@ const animal_categories = {
 }
 
 const cards = {
-	TYPE_SAWAH: {
-		"top": [
-			{
-				"padi": preload("res://Card/Asset/sawah/0_padi.png")
-			},
-			{
-				"ulat": preload("res://Card/Asset/sawah/1_ulat.png"),
-				"belalang": preload("res://Card/Asset/sawah/1_jangkrik.png"),
-				"tikus": preload("res://Card/Asset/sawah/1_tikus.png")
-			},
-			{
-				"burung pipit": preload("res://Card/Asset/sawah/2_burung.png"),
-				"kodok": preload("res://Card/Asset/sawah/2_kodok.png"),
-				"laba-laba": preload("res://Card/Asset/sawah/2_laba-laba.png")
-			},
-			{
-				"ular": preload("res://Card/Asset/sawah/3_ular.png")
-			},
-			{
-				"elang": preload("res://Card/Asset/sawah/4_elang.png")
-			}
-		],
-		"bot": [
-			preload("res://Card/Asset/sawah/bot_0.png"),
-			preload("res://Card/Asset/sawah/bot_1.png"),
-			preload("res://Card/Asset/sawah/bot_2.png"),
-			preload("res://Card/Asset/sawah/bot_3.png"),
-			preload("res://Card/Asset/sawah/bot_4.png"),
-		],
-	},
-	TYPE_HUTAN: {
-		"top": [
-			{
-				"buah-buahan": preload("res://Card/Asset/hutan/0_ceri.png"),
-				"rumput": preload("res://Card/Asset/hutan/0_rumput.png")
-			},
-			{
-				"belalang": preload("res://Card/Asset/hutan/1_jangkrik.png"),
-				"kelinci": preload("res://Card/Asset/hutan/1_kelinci.png"),
-				"tikus": preload("res://Card/Asset/hutan/1_tikus.png"),
-				"burung": preload("res://Card/Asset/hutan/1_burung.png")
-			},
-			{
-				"ular": preload("res://Card/Asset/hutan/2_ular.png"),
-				"laba-laba": preload("res://Card/Asset/hutan/2_laba-laba.png")
-			},
-			{
-				"serigala": preload("res://Card/Asset/hutan/3_serigala.png"),
-				"elang": preload("res://Card/Asset/hutan/3_elang.png")
-			}
-		],
-		"bot": [
-			preload("res://Card/Asset/hutan/bot_0.png"),
-			preload("res://Card/Asset/hutan/bot_1.png"),
-			preload("res://Card/Asset/hutan/bot_2.png"),
-			preload("res://Card/Asset/hutan/bot_3.png"),
-			preload("res://Card/Asset/hutan/bot_4.png"),
-		],
-	},
-	TYPE_LAUT: {
-		"top": [
-			{
-				"alga": preload("res://Card/Asset/laut/0_alga.png"),
-				"fitoplankton": preload("res://Card/Asset/laut/0_plankton.png")
-			},
-			{
-				"ikan kecil": preload("res://Card/Asset/laut/1_ikan.png"),
-				"udang": preload("res://Card/Asset/laut/1_udang.png")
-			},
-			{
-				"flamingo": preload("res://Card/Asset/laut/2_flamingo.png"),
-				"gurita": preload("res://Card/Asset/laut/2_gurita.png"),
-				"salmon": preload("res://Card/Asset/laut/2_salmon.png")
-			},
-			{
-				"anjing laut": preload("res://Card/Asset/laut/3_anjing_laut.png"),
-				"pelikan": preload("res://Card/Asset/laut/3_pelikan.png")
-			},
-			{
-				"paus": preload("res://Card/Asset/laut/4_paus.png")
-			}
-		],
-		"bot": [
-			preload("res://Card/Asset/laut/bot_0.png"),
-			preload("res://Card/Asset/laut/bot_1.png"),
-			preload("res://Card/Asset/laut/bot_2.png"),
-			preload("res://Card/Asset/laut/bot_3.png"),
-			preload("res://Card/Asset/laut/bot_4.png"),
-			preload("res://Card/Asset/laut/bot_5.png")
-		],
-	},
-	TYPE_SUNGAI: {
-		"top": [
-			{
-				"alga": preload("res://Card/Asset/sungai/0_alga.png"),
-				"lumut": preload("res://Card/Asset/sungai/0_lumut.png")
-			},
-			{
-				"ikan kecil": preload("res://Card/Asset/sungai/1_ikan_kecil.png"),
-				"udang": preload("res://Card/Asset/sungai/1_udang.png")
-			},
-			{
-				"ikan besar": preload("res://Card/Asset/sungai/2_ikan_besar.png")
-			},
-			{
-				"bebek": preload("res://Card/Asset/sungai/3_bebek.png"),
-				"berang-berang": preload("res://Card/Asset/sungai/3_otter.png"),
-				"burung pelikan": preload("res://Card/Asset/sungai/3_pelikan.png")
-			},
-			{
-				"beruang": preload("res://Card/Asset/sungai/4_beruang.png")
-			},
-		],
-		"bot": [
-			preload("res://Card/Asset/sungai/bot_0.png"),
-			preload("res://Card/Asset/sungai/bot_1.png"),
-			preload("res://Card/Asset/sungai/bot_2.png"),
-			preload("res://Card/Asset/sungai/bot_3.png"),
-			preload("res://Card/Asset/sungai/bot_4.png"),
-			preload("res://Card/Asset/sungai/bot_5.png")
-		],
-	},
-	TYPE_PADANG_RUMPUT: {
-		"top": [
-			{
-				"pohon": preload("res://Card/Asset/padang rumput/0_pohon.png"),
-				"rumput": preload("res://Card/Asset/padang rumput/0_rumput.png")
-			},
-			{
-				"gajah": preload("res://Card/Asset/padang rumput/1_gajah.png"),
-				"jerapah": preload("res://Card/Asset/padang rumput/1_jerapah.png"),
-				"kelinci": preload("res://Card/Asset/padang rumput/1_kelinci.png"),
-				"zebra": preload("res://Card/Asset/padang rumput/1_zebra.png")
-			},
-			{
-				"ular": preload("res://Card/Asset/padang rumput/2_ular.png")
-			},
-			{
-				"harimau": preload("res://Card/Asset/padang rumput/3_harimau.png"),
-				"singa": preload("res://Card/Asset/padang rumput/3_singa.png"),
-				"serigala": preload("res://Card/Asset/padang rumput/3_serigala.png")
-			}
-		],
-		"bot": [
-			preload("res://Card/Asset/padang rumput/bot_0.png"),
-			preload("res://Card/Asset/padang rumput/bot_1.png"),
-			preload("res://Card/Asset/padang rumput/bot_2.png"),
-			preload("res://Card/Asset/padang rumput/bot_3.png"),
-			preload("res://Card/Asset/padang rumput/bot_4.png")
-		],
-	},
-	TYPE_PADANG_GURUN: {
-		"top": [
-			{
-				"biji-bijian": preload("res://Card/Asset/padang gurun/0_biji.png"),
-				"rumput": preload("res://Card/Asset/padang gurun/0_rumput.png")
-			},
-			{
-				"burung": preload("res://Card/Asset/padang gurun/1_burung.png"),
-				"kadal": preload("res://Card/Asset/padang gurun/1_kadal.png"),
-				"rusa": preload("res://Card/Asset/padang gurun/1_rusa.png"),
-				"tikus": preload("res://Card/Asset/padang gurun/1_tikus.png"),
-				"unta": preload("res://Card/Asset/padang gurun/1_unta.png")
-			},
-			{
-				"ular": preload("res://Card/Asset/padang gurun/2_ular.png")
-			},
-			{
-				"elang": preload("res://Card/Asset/padang gurun/3_elang.png"),
-				"serigala": preload("res://Card/Asset/padang gurun/3_serigala.png")
-			},
-		],
-		"bot": [
-			preload("res://Card/Asset/padang gurun/bot_0.png"),
-			preload("res://Card/Asset/padang gurun/bot_1.png"),
-			preload("res://Card/Asset/padang gurun/bot_2.png"),
-			preload("res://Card/Asset/padang gurun/bot_3.png"),
-			preload("res://Card/Asset/padang gurun/bot_4.png")
-		],
-	},
-	TYPE_PADANG_ES: {
-		"top": [
-			{
-				"fitoplankton": preload("res://Card/Asset/padang es/0_plankton.png"),
-				"tanaman": preload("res://Card/Asset/padang es/0_tanaman.png")
-			},
-			{
-				"ikan kecil": preload("res://Card/Asset/padang es/1_ikan_kecil.png"),
-				"kelinci": preload("res://Card/Asset/padang es/1_kelinci.png")
-			},
-			{
-				"musang": preload("res://Card/Asset/padang es/2_musang.png"),
-				"burung hantu": preload("res://Card/Asset/padang es/2_owl.png"),
-				"penguin": preload("res://Card/Asset/padang es/2_penguin.png")
-			},
-			{
-				"elang": preload("res://Card/Asset/padang es/3_elang.png"),
-				"serigala": preload("res://Card/Asset/padang es/3_serigala.png")
-			},
-			{
-				"beruang": preload("res://Card/Asset/padang es/4_beruang.png")
-			}
-		],
-		"bot": [
-			preload("res://Card/Asset/padang es/bot_0.png"),
-			preload("res://Card/Asset/padang es/bot_1.png"),
-			preload("res://Card/Asset/padang es/bot_2.png"),
-			preload("res://Card/Asset/padang es/bot_3.png"),
-			preload("res://Card/Asset/padang es/bot_4.png")
-		],
-	}
+	TYPE_SAWAH: [
+		{
+			"padi": preload("res://Card/Asset/sawah/0_padi.png")
+		},
+		{
+			"ulat": preload("res://Card/Asset/sawah/1_ulat.png"),
+			"belalang": preload("res://Card/Asset/sawah/1_jangkrik.png"),
+			"tikus": preload("res://Card/Asset/sawah/1_tikus.png")
+		},
+		{
+			"burung pipit": preload("res://Card/Asset/sawah/2_burung.png"),
+			"katak": preload("res://Card/Asset/sawah/2_kodok.png"),
+			"laba-laba": preload("res://Card/Asset/sawah/2_laba-laba.png")
+		},
+		{
+			"ular": preload("res://Card/Asset/sawah/3_ular.png")
+		},
+		{
+			"elang": preload("res://Card/Asset/sawah/4_elang.png")
+		}
+	],
+	TYPE_HUTAN: [
+		{
+			"buah-buahan": preload("res://Card/Asset/hutan/0_ceri.png"),
+			"rumput": preload("res://Card/Asset/hutan/0_rumput.png")
+		},
+		{
+			"belalang": preload("res://Card/Asset/hutan/1_jangkrik.png"),
+			"kelinci": preload("res://Card/Asset/hutan/1_kelinci.png"),
+			"tikus": preload("res://Card/Asset/hutan/1_tikus.png"),
+			"burung": preload("res://Card/Asset/hutan/1_burung.png")
+		},
+		{
+			"ular": preload("res://Card/Asset/hutan/2_ular.png"),
+			"laba-laba": preload("res://Card/Asset/hutan/2_laba-laba.png")
+		},
+		{
+			"serigala": preload("res://Card/Asset/hutan/3_serigala.png"),
+			"elang": preload("res://Card/Asset/hutan/3_elang.png")
+		}
+	],
+	TYPE_LAUT: [
+		{
+			"alga": preload("res://Card/Asset/laut/0_alga.png"),
+			"fitoplankton": preload("res://Card/Asset/laut/0_plankton.png")
+		},
+		{
+			"ikan kecil": preload("res://Card/Asset/laut/1_ikan.png"),
+			"udang": preload("res://Card/Asset/laut/1_udang.png")
+		},
+		{
+			"flamingo": preload("res://Card/Asset/laut/2_flamingo.png"),
+			"gurita": preload("res://Card/Asset/laut/2_gurita.png"),
+			"salmon": preload("res://Card/Asset/laut/2_salmon.png")
+		},
+		{
+			"anjing laut": preload("res://Card/Asset/laut/3_anjing_laut.png"),
+			"pelikan": preload("res://Card/Asset/laut/3_pelikan.png")
+		},
+		{
+			"paus": preload("res://Card/Asset/laut/4_paus.png")
+		}
+	],
+	TYPE_SUNGAI: [
+		{
+			"alga": preload("res://Card/Asset/sungai/0_alga.png"),
+			"lumut": preload("res://Card/Asset/sungai/0_lumut.png")
+		},
+		{
+			"ikan kecil": preload("res://Card/Asset/sungai/1_ikan_kecil.png"),
+			"udang": preload("res://Card/Asset/sungai/1_udang.png")
+		},
+		{
+			"ikan besar": preload("res://Card/Asset/sungai/2_ikan_besar.png")
+		},
+		{
+			"bebek": preload("res://Card/Asset/sungai/3_bebek.png"),
+			"berang-berang": preload("res://Card/Asset/sungai/3_otter.png"),
+			"burung pelikan": preload("res://Card/Asset/sungai/3_pelikan.png")
+		},
+		{
+			"beruang": preload("res://Card/Asset/sungai/4_beruang.png")
+		},
+	],
+	TYPE_PADANG_RUMPUT: [
+		{
+			"pohon": preload("res://Card/Asset/padang rumput/0_pohon.png"),
+			"rumput": preload("res://Card/Asset/padang rumput/0_rumput.png")
+		},
+		{
+			"gajah": preload("res://Card/Asset/padang rumput/1_gajah.png"),
+			"jerapah": preload("res://Card/Asset/padang rumput/1_jerapah.png"),
+			"kelinci": preload("res://Card/Asset/padang rumput/1_kelinci.png"),
+			"zebra": preload("res://Card/Asset/padang rumput/1_zebra.png")
+		},
+		{
+			"ular": preload("res://Card/Asset/padang rumput/2_ular.png")
+		},
+		{
+			"harimau": preload("res://Card/Asset/padang rumput/3_harimau.png"),
+			"singa": preload("res://Card/Asset/padang rumput/3_singa.png"),
+			"serigala": preload("res://Card/Asset/padang rumput/3_serigala.png")
+		}
+	],
+	TYPE_PADANG_GURUN: [
+		{
+			"biji-bijian": preload("res://Card/Asset/padang gurun/0_biji.png"),
+			"rumput": preload("res://Card/Asset/padang gurun/0_rumput.png")
+		},
+		{
+			"burung": preload("res://Card/Asset/padang gurun/1_burung.png"),
+			"kadal": preload("res://Card/Asset/padang gurun/1_kadal.png"),
+			"rusa": preload("res://Card/Asset/padang gurun/1_rusa.png"),
+			"tikus": preload("res://Card/Asset/padang gurun/1_tikus.png"),
+			"unta": preload("res://Card/Asset/padang gurun/1_unta.png")
+		},
+		{
+			"ular": preload("res://Card/Asset/padang gurun/2_ular.png")
+		},
+		{
+			"elang": preload("res://Card/Asset/padang gurun/3_elang.png"),
+			"serigala": preload("res://Card/Asset/padang gurun/3_serigala.png")
+		},
+	],
+	TYPE_PADANG_ES: [
+		{
+			"fitoplankton": preload("res://Card/Asset/padang es/0_plankton.png"),
+			"tanaman": preload("res://Card/Asset/padang es/0_tanaman.png")
+		},
+		{
+			"ikan kecil": preload("res://Card/Asset/padang es/1_ikan_kecil.png"),
+			"kelinci": preload("res://Card/Asset/padang es/1_kelinci.png")
+		},
+		{
+			"musang": preload("res://Card/Asset/padang es/2_musang.png"),
+			"burung hantu": preload("res://Card/Asset/padang es/2_owl.png"),
+			"penguin": preload("res://Card/Asset/padang es/2_penguin.png")
+		},
+		{
+			"elang": preload("res://Card/Asset/padang es/3_elang.png"),
+			"serigala": preload("res://Card/Asset/padang es/3_serigala.png")
+		},
+		{
+			"beruang": preload("res://Card/Asset/padang es/4_beruang.png")
+		}
+	]
+}
+
+const card_base = {
+	TYPE_SAWAH: preload("res://Card/Asset/card base/sawah.png"),
+	TYPE_HUTAN: preload("res://Card/Asset/card base/hutan.png"),
+	TYPE_LAUT: preload("res://Card/Asset/card base/laut.png"),
+	TYPE_SUNGAI: preload("res://Card/Asset/card base/sungai.png"),
+	TYPE_PADANG_RUMPUT: preload("res://Card/Asset/card base/padang rumput.png"),
+	TYPE_PADANG_GURUN: preload("res://Card/Asset/card base/padang pasir.png"),
+	TYPE_PADANG_ES: preload("res://Card/Asset/card base/padang es.png")
 }
 
 const button_blank_normal = preload("res://Buttons/Assets/CardSelect/card-select-button-template.png")
 const button_blank_pressed = preload("res://Buttons/Assets/CardSelect/card-pressed-button-template.png")
 const button_blank_hinted = preload("res://Buttons/Assets/CardSelect/card-highlight-button-template.png")
 
-
-const x_mark = preload("res://Board/Asset/x-mark.png")
-
 var current_type = TYPE_SAWAH
 var card_stock = null
 var available_level = [1]
 var current_cards = null
+var from_comic = true
 
 const tile_size = 180
 const board_row = 5
@@ -340,7 +283,7 @@ var selected_card = {
 }
 
 var wrong_penalty = 10
-var enable_bonus = true
+var enable_bonus = false
 var input_enabled = true
 var use_hint = false
 
@@ -375,10 +318,16 @@ var save_dict = {
 	}
 }
 
+const save_path = {
+	"Windows": "res://savefile/savegame.save",
+	"Android": "user://DORAMA_savefile.data"
+}
+
 func _ready():
 	var save_game = File.new()
-	if save_game.file_exists("res://savefile/savegame.save"):
-		save_game.open("res://savefile/savegame.save", File.READ)
+	var path = save_path[OS.get_name()]
+	if save_game.file_exists(path):
+		save_game.open(path, File.READ)
 		save_dict = parse_json(save_game.get_line())
 		save_game.close()
 
@@ -386,7 +335,15 @@ func save_game(score):
 	save_dict[current_type]["score"] = score
 	save_dict[current_type]["has_been_played"] = true
 	var save_game = File.new()
-	save_game.open("res://savefile/savegame.save", File.WRITE)
+	var path = save_path[OS.get_name()]
+	save_game.open(path, File.WRITE)
+	save_game.store_line(to_json(save_dict))
+	save_game.close()
+
+func save():
+	var save_game = File.new()
+	var path = save_path[OS.get_name()]
+	save_game.open(path, File.WRITE)
 	save_game.store_line(to_json(save_dict))
 	save_game.close()
 	
@@ -400,7 +357,7 @@ func add_availability(level):
 
 func set_cards(level):
 	card_stock = []
-	var card_set = cards[level]["top"]
+	var card_set = cards[level]
 	for i in range(card_set.size()):
 		card_stock.append([])
 		var card_map = card_set[i]
@@ -417,7 +374,10 @@ func can_consume(prey,predator):
 	# Ular gabisa makan hewan gede
 	if predator.animal_name == "ular":
 		if current_type == TYPE_SAWAH:
-			return not(prey.animal_name in Global.animal_categories["hewan besar"]) and prey.level <= 3 and prey.level >= 2
+			return (
+				not(prey.animal_name in Global.animal_categories["hewan besar"])
+				and (prey.level <= 3 and prey.level >= 2)
+			)
 		else:
 			return not(prey.animal_name in Global.animal_categories["hewan besar"]) and prey.level == 2
 	# Penguin cuma bisa makan ikan
@@ -432,3 +392,36 @@ func can_consume(prey,predator):
 		return prey.level == predator.level
 	else:
 		return prey.level <= predator.level
+
+func reset_score():
+	save_dict = {
+		TYPE_SAWAH: {
+			"has_been_played": false,
+			"score": 0
+		},
+		TYPE_HUTAN: {
+			"has_been_played": false,
+			"score": 0
+		},
+		TYPE_LAUT: {
+			"has_been_played": false,
+			"score": 0
+		},
+		TYPE_SUNGAI: {
+			"has_been_played": false,
+			"score": 0
+		},
+		TYPE_PADANG_RUMPUT: {
+			"has_been_played": false,
+			"score": 0
+		},
+		TYPE_PADANG_GURUN: {
+			"has_been_played": false,
+			"score": 0
+		},
+		TYPE_PADANG_ES: {
+			"has_been_played": false,
+			"score": 0
+		}
+	}
+	Global.save()

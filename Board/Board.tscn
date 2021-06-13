@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Board/TilesManager.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Board/CardManager.gd" type="Script" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://Popup/GameOverPopup.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Buttons/HintButton.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Buttons/HomeButton.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Buttons/UndoButton.tscn" type="PackedScene" id=8]
 
 [node name="Board" type="Node2D"]
 script = ExtResource( 4 )
@@ -35,6 +36,8 @@ margin_top = 15.0
 margin_right = 285.0
 margin_bottom = 255.0
 rect_scale = Vector2( 0.6, 0.6 )
+path_to_new_scene = "res://Menus/SelectLevel.tscn"
+change_bgm = true
 
 [node name="GameOverPopup" parent="." instance=ExtResource( 5 )]
 
@@ -46,7 +49,17 @@ one_shot = true
 [node name="PopupDelayTimer" type="Timer" parent="."]
 wait_time = 5.0
 one_shot = true
+
+[node name="UndoButton" parent="." instance=ExtResource( 8 )]
+margin_left = 2048.65
+margin_top = 12.8465
+margin_right = 2813.65
+margin_bottom = 777.847
+rect_scale = Vector2( 0.19, 0.19 )
+action_mode = 0
+button_mask = 0
 [connection signal="x_mark_spot" from="TilesManager" to="." method="_on_TilesManager_x_mark_spot"]
 [connection signal="timeout" from="HintTimer" to="." method="_on_HintTimer_timeout"]
 [connection signal="timeout" from="X-MarkTimer" to="." method="_on_XMarkTimer_timeout"]
 [connection signal="timeout" from="PopupDelayTimer" to="." method="_on_PopupDelayTimer_timeout"]
+[connection signal="pressed" from="UndoButton" to="." method="_on_UndoButton_pressed"]

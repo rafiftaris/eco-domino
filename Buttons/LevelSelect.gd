@@ -19,4 +19,5 @@ func _gui_input(event):
 
 func _pressed():
 	Global.current_type = eco_type
-	get_tree().change_scene("res://Board/Level.tscn")
+	SfxPlayer.play_sfx(SfxPlayer.CLICK)
+	Transit.change_scene("res://Board/Level.tscn")
